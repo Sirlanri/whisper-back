@@ -1,9 +1,12 @@
 package main
 
 import (
-	"fmt"
+	"whisper/handlers"
+
+	"github.com/kataras/iris/v12"
 )
 
 func main() {
-	fmt.Println("hello motherfucker")
+	app := iris.New()
+	app.OnErrorCode(iris.StatusNotFound, handlers.NotFound)
 }
