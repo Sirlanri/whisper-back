@@ -15,6 +15,7 @@ func main() {
 		AllowCredentials: true,
 	})
 	whisper := app.Party("/whisper", crs).AllowMethods(iris.MethodOptions)
+
 	whisper.Post("/login", handlers.Login)
 
 	app.Run(iris.Addr(":8090"))

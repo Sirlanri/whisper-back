@@ -7,15 +7,16 @@ import (
 )
 
 //Login 传入mail和密码，验证密码是否正确，不正确返回false
-func Login(mail string, pw string) (result bool) {
+func Login(mail string, pw string) (result bool, power int) {
 	//hashed := Myhash(pw)
-	pwFromDb := sqls.Login(mail)
+	pwFromDb, power := sqls.Login(mail)
 	if pw == pwFromDb {
 		println("用户登录成功", mail)
-		return true
+		result = true
+	} else {
+		result = false
 	}
-	return false
-
+	return
 }
 
 //Myhash 计算密码的哈希值
