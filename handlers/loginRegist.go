@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"whisper/serves"
 	"whisper/structs"
 
@@ -12,7 +13,7 @@ func Login(ctx iris.Context) {
 	var res structs.ResLogin
 	err := ctx.ReadJSON(&res)
 	if err != nil {
-		println("前端传入数据出错", err.Error())
+		fmt.Println("前端传入数据出错", err.Error())
 		ctx.WriteString("传入格式不正确" + err.Error())
 		return
 	}
@@ -31,4 +32,16 @@ func Login(ctx iris.Context) {
 		ctx.WriteString("用户名或密码错误")
 	}
 	return
+}
+
+//Regist handler 处理注册请求
+func Regist(ctx iris.Context) {
+	var res structs.ResRegist
+	err := ctx.ReadJSON(&res)
+	if err != nil {
+		fmt.Println("前端传入数据出错", err.Error())
+		ctx.StatusCode(400)
+		ctx.WriteString("传入格式不正确" + err.Error())
+		return
+	}
 }

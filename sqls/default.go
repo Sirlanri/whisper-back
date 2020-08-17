@@ -2,6 +2,7 @@ package sqls
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -18,11 +19,11 @@ func init() {
 func ConnectDB() *sql.DB {
 	Db, err := sql.Open("mysql", "root:123456@/whisper")
 	if err != nil {
-		println("数据库初始化链接失败", err.Error())
+		fmt.Println("数据库初始化链接失败", err.Error())
 	}
 
 	if Db.Ping() != nil {
-		println("初始化-数据库-用户/密码/库验证失败", Db.Ping().Error())
+		fmt.Println("初始化-数据库-用户/密码/库验证失败", Db.Ping().Error())
 		return nil
 	}
 	return Db
