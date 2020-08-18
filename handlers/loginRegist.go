@@ -51,5 +51,7 @@ func Regist(ctx iris.Context) {
 		ctx.WriteString("传入格式不正确" + err.Error())
 		return
 	}
-
+	result, code := serves.Regist(res.Name, res.Mail, res.Password)
+	ctx.StatusCode(code)
+	ctx.WriteString(result)
 }
