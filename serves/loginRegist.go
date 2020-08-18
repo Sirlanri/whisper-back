@@ -30,7 +30,6 @@ func Myhash(pw string) string {
 }
 
 //Regist 接受用户名、邮箱、密码
-//返回code：200-注册成功 201-用户名密码已存在 202-用户名邮箱格式不正确
 func Regist(name, mail, pw string) (result string, code int) {
 	if !check(name, mail) {
 		result = "用户名或邮箱格式不正确，请检查后输入"

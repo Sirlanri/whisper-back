@@ -8,12 +8,16 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-//Login handler 处理登录请求
+/*Login handler 处理登录请求
+
+返回code：200-普通用户登录 201-管理员登录 202-用户名或密码错误*/
+//400-前端传入json格式不正确
 func Login(ctx iris.Context) {
 	var res structs.ResLogin
 	err := ctx.ReadJSON(&res)
 	if err != nil {
 		fmt.Println("前端传入数据出错", err.Error())
+		ctx.StatusCode(400)
 		ctx.WriteString("传入格式不正确" + err.Error())
 		return
 	}
@@ -34,7 +38,10 @@ func Login(ctx iris.Context) {
 	return
 }
 
-//Regist handler 处理注册请求
+/*Regist handler 处理注册请求
+
+返回code：200-注册成功 201-用户名密码已存在 202-用户名邮箱格式不正确
+400-前端传入json格式不正确*/
 func Regist(ctx iris.Context) {
 	var res structs.ResRegist
 	err := ctx.ReadJSON(&res)

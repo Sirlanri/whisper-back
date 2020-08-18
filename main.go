@@ -17,6 +17,7 @@ func main() {
 	whisper := app.Party("/whisper", crs).AllowMethods(iris.MethodOptions)
 
 	whisper.Post("/login", handlers.Login)
+	whisper.Post("/regist", handlers.Regist)
 
 	app.Run(iris.Addr(":8090"))
 

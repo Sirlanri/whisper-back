@@ -12,4 +12,5 @@ require (
 	github.com/iris-contrib/blackfriday v2.0.0+incompatible // indirect
 	github.com/iris-contrib/middleware/cors v0.0.0-20200810001613-32cf668f999f // indirect
 	github.com/kataras/iris/v12 v12.1.9-0.20200809192844-da029d6f3722
+	golang.org/x/tools/gopls v0.4.4 // indirect
 )
