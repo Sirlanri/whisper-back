@@ -30,12 +30,15 @@ func Myhash(pw string) string {
 }
 
 //Regist 接受用户名、邮箱、密码
-func Regist(name, mail, pw string) (result string) {
+//返回code：200-注册成功 201-用户名密码已存在 202-用户名邮箱格式不正确
+func Regist(name, mail, pw string) (result string, code int) {
 	if !check(name, mail) {
-		result = "用户名或邮箱不合法，请检查后输入"
+		result = "用户名或邮箱格式不正确，请检查后输入"
+		code = 202
 	} else {
-
+		result, code = sqls.Regist(name, mail, pw)
 	}
+	return
 }
 
 //正则表达式检验用户创建的用户名，邮箱是否合理（不与数据库查重）

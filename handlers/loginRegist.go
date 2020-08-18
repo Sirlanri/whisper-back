@@ -44,4 +44,5 @@ func Regist(ctx iris.Context) {
 		ctx.WriteString("传入格式不正确" + err.Error())
 		return
 	}
+
 }
