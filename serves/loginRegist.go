@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"regexp"
+	"strings"
 	"whisper/sqls"
 )
 
@@ -29,5 +31,25 @@ func Myhash(pw string) string {
 
 //Regist 接受用户名、邮箱、密码
 func Regist(name, mail, pw string) (result string) {
+	if !check(name, mail) {
+		result = "用户名或邮箱不合法，请检查后输入"
+	} else {
 
+	}
+}
+
+//正则表达式检验用户创建的用户名，邮箱是否合理（不与数据库查重）
+func check(name, mail string) bool {
+	length := strings.Count(name, "")
+	if length == 0 {
+		return false
+	}
+	//检测邮箱
+	mailres := regexp.MustCompile(`\S+@\S+\.`)
+	result := mailres.MatchString(mail)
+	if result {
+		return true
+	} else {
+		return false
+	}
 }
