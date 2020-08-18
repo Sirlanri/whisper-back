@@ -10,3 +10,5 @@ func Login(mail string) (string, int) {
 	row.Scan(&pw, &power)
 	return pw, power
 }
+
+//Regist SQL 先查询是否存在重复的邮箱或昵称，再插入
