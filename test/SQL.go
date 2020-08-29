@@ -11,7 +11,7 @@ import (
 var Db *sql.DB
 
 //初始化，自动创建db指针
-func main() {
+func main1() {
 	Db = ConnectDB()
 	Regist("蓝", "ii@ri.cn", "123")
 }
@@ -29,6 +29,8 @@ func ConnectDB() *sql.DB {
 	}
 	return Db
 }
+
+//Regist 注册函数
 func Regist(name, mail, pw string) (result string) {
 	//传入的参数分别对应着mail userName password userName mail
 	pre, err := Db.Prepare(`INSERT INTO user (mail, userName, password)
