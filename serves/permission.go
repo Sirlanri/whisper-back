@@ -1,6 +1,8 @@
 package serves
 
 import (
+	"fmt"
+
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
 )
@@ -24,4 +26,14 @@ func AdminPermiss(ctx iris.Context, mail string) {
 	session1.Set("admin", true)
 	session1.Set("isLogin", true)
 	session1.Set("mail", mail)
+}
+
+//ClearPermiss 注销登录，清除用户权限
+func ClearPermiss(ctx iris.Context) {
+	sessClear := sess.Start(ctx)
+	mail := sessClear.GetString("mail")
+	sessClear.Destroy()
+	ctx.RemoveCookie("login")
+	fmt.Println("用户注销 ", mail)
+	ctx.WriteString("注销成功")
 }

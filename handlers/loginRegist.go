@@ -55,3 +55,9 @@ func Regist(ctx iris.Context) {
 	ctx.StatusCode(code)
 	ctx.WriteString(result)
 }
+
+/*Logout handler 注销登录
+ */
+func Logout(ctx iris.Context) {
+	serves.ClearPermiss(ctx)
+}
