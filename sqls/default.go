@@ -26,5 +26,6 @@ func ConnectDB() *sql.DB {
 		fmt.Println("初始化-数据库-用户/密码/库验证失败", Db.Ping().Error())
 		return nil
 	}
+
 	return Db
 }
