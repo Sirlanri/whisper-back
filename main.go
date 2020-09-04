@@ -19,7 +19,7 @@ func main() {
 	whisper.Post("/login", handlers.Login)
 	whisper.Post("/regist", handlers.Regist)
 	whisper.Get("/logout", handlers.Logout)
-
+	whisper.Get("/getUserInfo/{mail}", handlers.GetUserInfo)
 	app.Run(iris.Addr(":8090"))
 
 	return

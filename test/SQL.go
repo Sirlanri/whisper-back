@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,9 +12,9 @@ import (
 var Db *sql.DB
 
 //初始化，自动创建db指针
-func main1() {
+func main() {
 	Db = ConnectDB()
-	Regist("蓝", "ii@ri.cn", "123")
+	Test()
 }
 
 //ConnectDB 初始化时，连接数据库
@@ -52,4 +53,29 @@ func Regist(name, mail, pw string) (result string) {
 	println(rownum)
 	result = "执行完毕"
 	return
+}
+
+//Test 测试的
+func Test() {
+	tx, err := Db.Begin()
+	if err != nil {
+		println(err.Error())
+	}
+	t1 := time.Now()
+
+	for i := 0; i < 10000; i++ {
+		_, err := tx.Exec("insert into `test` (`test`) values (?)", i)
+		if err != nil {
+			println("执行出错", err.Error())
+		}
+	}
+
+	elapsed := time.Since(t1)
+	err = tx.Commit()
+	println("用时", elapsed.Seconds())
+
+	if err != nil {
+		println(err.Error())
+	}
+
 }

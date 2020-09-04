@@ -2,7 +2,7 @@ package main
 
 import "regexp"
 
-func main() {
+func main2() {
 	source := "mail@ri-cocn"
 	reg1, err := regexp.Compile(`\S+@\S+\.`)
 	if err != nil {
