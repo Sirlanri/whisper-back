@@ -6,6 +6,6 @@ type UserInfo struct {
 	Intro      string `json:"intro"`
 	Avatar     string `json:"avatar"`
 	Bannar     string `json:"bannar"`
-	PostCount  int    `json:"postcount"`
-	ReplyCount int    `json:"replycount"`
+	PostCount  int    `json:"postCount"`
+	ReplyCount int    `json:"replyCount"`
 }
