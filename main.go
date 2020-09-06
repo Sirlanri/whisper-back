@@ -20,6 +20,10 @@ func main() {
 	whisper.Post("/regist", handlers.Regist)
 	whisper.Get("/logout", handlers.Logout)
 	whisper.Get("/getUserInfo", handlers.GetUserInfo)
+	whisper.Post("/uploadPics", handlers.UploadPics)
+	whisper.Post("/newPost", handlers.NewPost)
+
+	whisper.HandleDir("/getpics", iris.Dir("./uploadpics"))
 	app.Run(iris.Addr(":8090"))
 
 	return

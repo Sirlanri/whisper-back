@@ -10,6 +10,7 @@ require (
 	github.com/kataras/iris/v12 v12.1.9-0.20200809192844-da029d6f3722
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/onsi/ginkgo v1.14.0 // indirect
+	github.com/satori/go.uuid v1.2.0
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
 )
