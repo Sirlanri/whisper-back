@@ -1,6 +1,7 @@
 package serves
 
 import (
+	"fmt"
 	"whisper/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -15,6 +16,6 @@ func Createid() string {
 }
 
 //NewPost 负责处理前端接收到的数据
-func NewPost(ResPost structs.ResPost) {
-
+func NewPost(ResPost structs.ResPost, mail string) {
+	fmt.Println(ResPost.Content)
 }

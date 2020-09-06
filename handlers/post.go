@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"whisper/serves"
+	"whisper/sqls"
 	"whisper/structs"
 
 	"github.com/kataras/iris/v12"
@@ -14,10 +15,18 @@ import (
 func NewPost(ctx iris.Context) {
 	var ResPost structs.ResPost
 	err := ctx.ReadJSON(&ResPost)
+
 	if err != nil {
 		fmt.Println("NewPost出错，前端传入格式错误", err.Error())
 		ctx.WriteString("传入格式有误")
 	}
+	//从session中获取用户mail
+	mail := serves.GetUserMail(ctx)
+	if mail == "" {
+		ctx.WriteString("用户未登录")
+		return
+	}
+	sqls.NewPost(ResPost, mail)
 }
 
 /*UploadPics handler 上传图片

@@ -15,3 +15,9 @@ WHERE not exists (
             or mail = 'mal@ri-co.cn'
         LIMIT 1
     );
+
+INSERT INTO `post` (publisher,groupid,content) 
+values
+(1,1,"手动sql");
+
+select groupid from `group` where groupName="测试1";
