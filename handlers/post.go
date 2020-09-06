@@ -13,9 +13,9 @@ import (
 //NewPost handler 发布新推文
 func NewPost(ctx iris.Context) {
 	var ResPost structs.ResPost
-	err := ctx.ReadJSON(ResPost)
+	err := ctx.ReadJSON(&ResPost)
 	if err != nil {
-		fmt.Println("NewPost出错，前端传入格式错误")
+		fmt.Println("NewPost出错，前端传入格式错误", err.Error())
 		ctx.WriteString("传入格式有误")
 	}
 }
