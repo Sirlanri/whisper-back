@@ -20,9 +20,22 @@ INSERT INTO `post` (publisher,groupid,content)
 values
 (1,1,"手动sql");
 
-select groupid from `group` where groupName="测试1";
+select groupid from groups where groupName="测试1";
 
 select count(*) from post where groupid=1;
 
-insert into `group` (groupName,groupIntro,banner)
+insert into groups (groupName,groupIntro,banner)
 	values("手动1","手动插入的第一个","https://blog.ri-co.cn/wp-content/uploads/2020/04/white1.jpg");
+
+insert into groups (groupName,groupIntro,banner)
+	values("手动1","手动插入的第一个","https://blog.ri-co.cn/wp-content/uploads/2020/04/white1.jpg")
+    if select * from groups where groupName="手动1"
+
+INSERT INTO `groups` (groupName,groupIntro,banner)
+		SELECT "手动4","aaaaaa","zero"
+		from DUAL
+		WHERE not exists (
+				SELECT
+                 *
+				from `groups`
+				WHERE groupName="手动4" LIMIT 1);

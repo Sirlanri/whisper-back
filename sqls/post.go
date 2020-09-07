@@ -25,7 +25,7 @@ func NewPost(res structs.ResPost, mail string) {
 	fmt.Println("获取用户ID ", time.Since(t1))
 
 	//获取群组id
-	groupRow := tx.QueryRow("select groupid from `group` where groupName=?", res.Group)
+	groupRow := tx.QueryRow("select groupid from igroup where groupName=?", res.Group)
 	err = groupRow.Scan(&groupid)
 	if err != nil {
 		fmt.Println("获取群ID出错", err.Error())
@@ -89,7 +89,7 @@ func NewPost2(res structs.ResPost, mail string) {
 	fmt.Println("获取用户ID ", time.Since(t1))
 
 	//获取群组id
-	groupRow := Db.QueryRow("select groupid from `group` where groupName=?", res.Group)
+	groupRow := Db.QueryRow("select groupid from igroup where groupName=?", res.Group)
 	err = groupRow.Scan(&groupid)
 	if err != nil {
 		fmt.Println("获取群ID出错", err.Error())
@@ -129,7 +129,7 @@ func NewPost2(res structs.ResPost, mail string) {
 //GetGroupNames SQL 从数据库获取全部的群组名称 用于创建post
 func GetGroupNames() (groups []string) {
 	tx, _ := Db.Begin()
-	groupRows, err := tx.Query("select groupName from `group`")
+	groupRows, err := tx.Query("select groupName from igroup")
 	if err != nil {
 		fmt.Println("SQL 获取Group列表出错", err.Error())
 	}
