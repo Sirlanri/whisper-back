@@ -144,3 +144,22 @@ func GetGroups() (groups []string) {
 	fmt.Println(groups)
 	return
 }
+
+//GetTags SQL 从数据库获取全部的tag
+func GetTags() (tags []string) {
+	tx, _ := Db.Begin()
+	tagRows, err := tx.Query("select distinct topic from `tag`")
+	if err != nil {
+		fmt.Println("SQL 获取Tag列表出错", err.Error())
+	}
+	var tagName string
+	for tagRows.Next() {
+		err = tagRows.Scan(&tagName)
+		if err != nil {
+			fmt.Println("SQL scan出错", err.Error())
+		}
+		tags = append(tags, tagName)
+	}
+	fmt.Println(tags)
+	return
+}

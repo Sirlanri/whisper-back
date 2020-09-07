@@ -66,3 +66,12 @@ func GetGroups(ctx iris.Context) {
 	}
 	ctx.JSON(jsondata)
 }
+
+//GetTags handler 创建post时，获取全部群组列表
+func GetTags(ctx iris.Context) {
+	result := sqls.GetTags()
+	jsondata := map[string][]string{
+		"tags": result,
+	}
+	ctx.JSON(jsondata)
+}
