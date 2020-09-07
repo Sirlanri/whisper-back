@@ -58,9 +58,9 @@ func UploadPics(ctx iris.Context) {
 	fmt.Println("上传图片成功", fname)
 }
 
-//GetGroups handler 创建post时，获取全部群组列表
-func GetGroups(ctx iris.Context) {
-	result := sqls.GetGroups()
+//GetGroupNames handler 创建post时，获取全部群组列表
+func GetGroupNames(ctx iris.Context) {
+	result := sqls.GetGroupNames()
 	jsondata := map[string][]string{
 		"groups": result,
 	}

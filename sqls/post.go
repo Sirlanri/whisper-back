@@ -126,8 +126,8 @@ func NewPost2(res structs.ResPost, mail string) {
 	fmt.Println("SQL写入完毕")
 }
 
-//GetGroups SQL 从数据库获取全部的群组
-func GetGroups() (groups []string) {
+//GetGroupNames SQL 从数据库获取全部的群组名称 用于创建post
+func GetGroupNames() (groups []string) {
 	tx, _ := Db.Begin()
 	groupRows, err := tx.Query("select groupName from `group`")
 	if err != nil {
