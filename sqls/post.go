@@ -71,6 +71,7 @@ func NewPost(res structs.ResPost, mail string) {
 	fmt.Println("SQL写入完毕")
 }
 
+//NewPost2 另一种读取数据库的方式，更慢了mmp
 func NewPost2(res structs.ResPost, mail string) {
 	var (
 		err             error
@@ -123,4 +124,23 @@ func NewPost2(res structs.ResPost, mail string) {
 	elapsed := time.Since(t1)
 	fmt.Println("共计耗时 ", elapsed)
 	fmt.Println("SQL写入完毕")
+}
+
+//GetGroups SQL 从数据库获取全部的群组
+func GetGroups() (groups []string) {
+	tx, _ := Db.Begin()
+	groupRows, err := tx.Query("select groupName from `group`")
+	if err != nil {
+		fmt.Println("SQL 获取Group列表出错", err.Error())
+	}
+	var groupName string
+	for groupRows.Next() {
+		err = groupRows.Scan(&groupName)
+		if err != nil {
+			fmt.Println("SQL scan出错", err.Error())
+		}
+		groups = append(groups, groupName)
+	}
+	fmt.Println(groups)
+	return
 }

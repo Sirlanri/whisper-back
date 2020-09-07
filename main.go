@@ -20,6 +20,7 @@ func main() {
 	whisper.Post("/regist", handlers.Regist)
 	whisper.Get("/logout", handlers.Logout)
 	whisper.Get("/getUserInfo", handlers.GetUserInfo)
+	whisper.Get("/getGroups", handlers.GetGroups)
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)
 
