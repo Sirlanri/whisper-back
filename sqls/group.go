@@ -35,3 +35,25 @@ func Getgroups() []structs.GroupFront {
 	}
 	return groups
 }
+
+//NewGroup SQL 创建一个新的群组
+func NewGroup(res structs.ResGroup) bool {
+	tx, _ := Db.Begin()
+	//如果是0，不存在此名称的群，可以插入
+	ifrow := tx.QueryRow("select count(*) from `group` where groupName=?", res.Name)
+	var ifexist int
+	ifrow.Scan(&ifexist)
+	if ifexist != 0 {
+		return false
+	}
+
+	_, err := tx.Exec("insert into `group` (groupName,groupIntro,banner) values(?,?,?)",
+		res.Name, res.Intro, res.Pic)
+	if err != nil {
+		fmt.Println("SQL插入群组错误", err.Error())
+		return false
+	}
+	tx.Commit()
+	return true
+
+}

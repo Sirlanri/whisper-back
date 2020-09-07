@@ -23,3 +23,6 @@ values
 select groupid from `group` where groupName="测试1";
 
 select count(*) from post where groupid=1;
+
+insert into `group` (groupName,groupIntro,banner)
+	values("手动1","手动插入的第一个","https://blog.ri-co.cn/wp-content/uploads/2020/04/white1.jpg");

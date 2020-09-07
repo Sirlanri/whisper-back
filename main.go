@@ -25,6 +25,7 @@ func main() {
 	whisper.Get("/getGroups", handlers.GetGroups)
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)
+	whisper.Post("/newGroup", handlers.NewGroup)
 
 	whisper.HandleDir("/getpics", iris.Dir("./uploadpics"))
 	app.Run(iris.Addr(":8090"))

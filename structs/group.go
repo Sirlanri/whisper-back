@@ -8,3 +8,10 @@ type GroupFront struct {
 	Intro  string `json:"intro"`
 	Banner string `json:"imgsrc"`
 }
+
+//ResGroup 创建新群组，从前端接收的数据
+type ResGroup struct {
+	Name  string `json:"name"`
+	Intro string `json:"intro"`
+	Pic   string `json:"pic"`
+}
