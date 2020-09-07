@@ -75,3 +75,8 @@ func GetTags(ctx iris.Context) {
 	}
 	ctx.JSON(jsondata)
 }
+
+//GetAllPost handler 获取全部的post
+func GetAllPost(ctx iris.Context) {
+
+}

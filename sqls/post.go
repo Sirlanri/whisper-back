@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 	"whisper/structs"
+
+	"google.golang.org/protobuf/internal/errors"
 )
 
 //NewPost 负责处理前端接收到的数据
@@ -162,4 +164,37 @@ func GetTags() (tags []string) {
 	}
 	fmt.Println(tags)
 	return
+}
+
+//GetAllPost SQL 获取全部的post
+func GetAllPost() (posts []structs.DataPost) {
+	tx, _ := Db.Begin()
+	//这边限制查询数量，以后会懒加载
+	postRow, err := tx.Query("SELECT * FROM post ORDER BY postid DESC LIMIT 20")
+	if err != nil {
+		fmt.Println("SQL 查找posts失败", errors.Error())
+	}
+	var post structs.DataPost
+	for postRow.Next() {
+		err = postRow.Scan(&post.ID, &post.User, &post.Group, &post.Content, &post.Time)
+		if err != nil {
+			fmt.Println("SQL 读取后写入post出错", err.Error())
+		}
+	}
+	for index, single := range posts {
+		//获取tag
+		tagRow, err := tx.Query("select topic from tag where postid=?", single.ID)
+		if err != nil {
+			fmt.Println("SQL 获取tag失败/无tag", err.Error())
+		}
+		var topicList []string
+		for tagRow.Next() {
+			var oneTopic string
+			tagRow.Scan(&oneTopic)
+			topicList = append(topicList, oneTopic)
+		}
+		posts[index].Topic = topicList
+
+		//获取评论
+	}
 }

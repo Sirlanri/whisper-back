@@ -39,3 +39,5 @@ INSERT INTO `groups` (groupName,groupIntro,banner)
                  *
 				from `groups`
 				WHERE groupName="手动4" LIMIT 1);
+
+SELECT  * FROM post  ORDER BY postid DESC  LIMIT 20;
