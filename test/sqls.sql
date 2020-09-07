@@ -21,3 +21,5 @@ values
 (1,1,"手动sql");
 
 select groupid from `group` where groupName="测试1";
+
+select count(*) from post where groupid=1;

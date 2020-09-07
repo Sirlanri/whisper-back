@@ -22,6 +22,7 @@ func main() {
 	whisper.Get("/getUserInfo", handlers.GetUserInfo)
 	whisper.Get("/getGroupNames", handlers.GetGroupNames)
 	whisper.Get("/getTags", handlers.GetTags)
+	whisper.Get("/getGroups", handlers.GetGroups)
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)
 

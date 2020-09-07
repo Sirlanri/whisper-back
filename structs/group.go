@@ -6,5 +6,5 @@ type GroupFront struct {
 	Amount int    `json:"amount"`
 	Name   string `json:"name"`
 	Intro  string `json:"intro"`
-	Bannar string `json:"jmgsrc"`
+	Banner string `json:"imgsrc"`
 }
