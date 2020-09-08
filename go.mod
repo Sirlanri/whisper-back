@@ -13,4 +13,5 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
+	google.golang.org/protobuf v1.25.0
 )

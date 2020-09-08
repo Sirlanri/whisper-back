@@ -78,7 +78,7 @@ func GetTags(ctx iris.Context) {
 
 //GetAllPost handler 获取全部的post
 func GetAllPost(ctx iris.Context) {
-	posts := sqls.GetALlPost()
+	posts := sqls.GetALlPost2()
 	jsondata := map[string][]structs.DataPost{
 		"posts": posts,
 	}
