@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"time"
 	"whisper/structs"
-
-	"google.golang.org/protobuf/internal/errors"
 )
 
 //NewPost 负责处理前端接收到的数据
@@ -166,61 +164,67 @@ func GetTags() (tags []string) {
 	return
 }
 
-//GetAllPost SQL 获取全部的post
-func GetAllPost() (posts []structs.DataPost) {
+//GetALlPost SQL 获取全部post
+func GetALlPost() (posts []structs.DataPost) {
 	tx, _ := Db.Begin()
-	//这边限制查询数量，以后会懒加载
-	postRow, err := tx.Query("SELECT * FROM post ORDER BY postid DESC LIMIT 20")
+	var (
+		userid int
+		post   structs.DataPost
+		replys []structs.Reply //单个post的回复列表
+		reply  structs.Reply   //replys列表的单个回复元素
+	)
+
+	//获取全部post
+	postsRow, err := tx.Query(`SELECT * FROM post ORDER BY postid DESC LIMIT 20`)
 	if err != nil {
-		fmt.Println("SQL 查找posts失败", errors.Error())
+		fmt.Println("查询post列表出错", err.Error())
 	}
+
 	//单个回复post
-	var post structs.DataPost
-	for postRow.Next() {
-		err = postRow.Scan(&post.ID, &post.User, &post.Group, &post.Content, &post.Time)
+	for postsRow.Next() {
+		err = postsRow.Scan(&post.ID, &userid, &post.Group, &post.Content, &post.Time)
 		if err != nil {
 			fmt.Println("SQL 读取后写入post出错", err.Error())
 		}
-		posts = append(posts, post)
-	}
-	//评论列表,以便写入posts
-	var replylist []structs.Reply
-	for index, single := range posts {
-		//获取tag
-		tagRow, err := tx.Query("select topic from tag where postid=?", single.ID)
+
+		//通过userid获取发布者 昵称 头像。直接写入post中
+		userRow := tx.QueryRow(`select userName,avatar from user where userid=?`, userid)
+		userRow.Scan(&post.User, &post.Avatar)
+
+		//通过Postid获取replys
+		replysRow, err := tx.Query(`select fromUser,content
+		 from reply where postid=?`, post.ID)
 		if err != nil {
-			fmt.Println("SQL 获取tag失败/无tag", err.Error())
+			fmt.Println("SQL 通过postID获取replys出错", err.Error())
 		}
-		var topicList []string
-		for tagRow.Next() {
-			var oneTopic string
-			tagRow.Scan(&oneTopic)
-			topicList = append(topicList, oneTopic)
-		}
-		posts[index].Topic = topicList
-
-		//获取评论
 		var (
-			single   structs.Reply
-			singleid int
+			//replyUserids []int
+			replyUserid int
 		)
-		replyRow, err := tx.Query(`select fromUser,content
-		from reply where postid=?`, single.ID)
-		//临时存放获取的用户id列表
-		var idlist []int
-		for replyRow.Next() {
-			replyRow.Scan(&singleid, &posts[index].Content)
-			idlist = append(idlist, singleid)
-		}
-		//获取评论中的name
-
-		for index, id := range idlist {
-			nameRow := tx.QueryRow("select userName from user where userid=?", id)
-			err = nameRow.Scan(&single.Name)
+		for replysRow.Next() {
+			err = replysRow.Scan(&replyUserid, reply.Content)
 			if err != nil {
-				fmt.Println("Scan nameRow出错", err.Error())
+				fmt.Println("SQL 读取后写入reply出错", err.Error())
 			}
-
+			//通过userid获取用户名和头像
+			userRows := tx.QueryRow(`select userName,avatar from user where userid=?`, replyUserid)
+			if err != nil {
+				fmt.Println("SQL 通过id读取user信息出错", err.Error())
+			}
+			//单个reply信息已完善，添加至replys列表
+			userRows.Scan(&reply.Name, &reply.Imgsrc)
+			replys = append(replys, reply)
 		}
+		post.Replys = replys
+
+		//将完成的post添加到posts
+		posts = append(posts, post)
+
 	}
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("commit SQL 出错", err.Error())
+	}
+
+	return
 }

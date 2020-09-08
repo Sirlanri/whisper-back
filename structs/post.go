@@ -11,6 +11,7 @@ type ResPost struct {
 //DataPost 从数据库中获取的完整post
 type DataPost struct {
 	ID      int      `json:"id"`
+	Avatar  string   `json:"avatar"`
 	User    string   `json:"username"`
 	Group   string   `json:"groupname"`
 	Content string   `json:"content"`
