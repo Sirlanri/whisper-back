@@ -174,13 +174,17 @@ func GetAllPost() (posts []structs.DataPost) {
 	if err != nil {
 		fmt.Println("SQL 查找posts失败", errors.Error())
 	}
+	//单个回复post
 	var post structs.DataPost
 	for postRow.Next() {
 		err = postRow.Scan(&post.ID, &post.User, &post.Group, &post.Content, &post.Time)
 		if err != nil {
 			fmt.Println("SQL 读取后写入post出错", err.Error())
 		}
+		posts = append(posts, post)
 	}
+	//评论列表,以便写入posts
+	var replylist []structs.Reply
 	for index, single := range posts {
 		//获取tag
 		tagRow, err := tx.Query("select topic from tag where postid=?", single.ID)
@@ -196,5 +200,27 @@ func GetAllPost() (posts []structs.DataPost) {
 		posts[index].Topic = topicList
 
 		//获取评论
+		var (
+			single   structs.Reply
+			singleid int
+		)
+		replyRow, err := tx.Query(`select fromUser,content
+		from reply where postid=?`, single.ID)
+		//临时存放获取的用户id列表
+		var idlist []int
+		for replyRow.Next() {
+			replyRow.Scan(&singleid, &posts[index].Content)
+			idlist = append(idlist, singleid)
+		}
+		//获取评论中的name
+
+		for index, id := range idlist {
+			nameRow := tx.QueryRow("select userName from user where userid=?", id)
+			err = nameRow.Scan(&single.Name)
+			if err != nil {
+				fmt.Println("Scan nameRow出错", err.Error())
+			}
+
+		}
 	}
 }
