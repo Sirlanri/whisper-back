@@ -113,11 +113,11 @@ func GetTags() (tags []string) {
 func GetALlPost() (posts []structs.DataPost) {
 	tx, _ := Db.Begin()
 	var (
-		userids []int
-		userid  int
-		post    structs.DataPost
-		replys  []structs.Reply //单个post的回复列表
-		reply   structs.Reply   //replys列表的单个回复元素
+		userids  []int
+		userid   int
+		post     structs.DataPost
+		reply    structs.Reply //replys列表的单个回复元素
+		groupids []int
 	)
 
 	//SQL获取全部post
@@ -128,10 +128,13 @@ func GetALlPost() (posts []structs.DataPost) {
 
 	//Scan回复
 	for postsRow.Next() {
-		err = postsRow.Scan(&post.ID, &userid, &post.Group, &post.Content, &post.Time)
+		var groupid int
+		err = postsRow.Scan(&post.ID, &userid, &groupid, &post.Content, &post.Time)
 		if err != nil {
 			fmt.Println("SQL 读取后写入post出错", err.Error())
 		}
+		post.Time = post.Time[5:16]
+		groupids = append(groupids, groupid)
 		userids = append(userids, userid)
 		posts = append(posts, post)
 	}
@@ -143,6 +146,26 @@ func GetALlPost() (posts []structs.DataPost) {
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
 			fmt.Println("SQL 写入user信息出错", err.Error())
+		}
+
+		//通过groupid获取群名称
+		if groupids[index] == 0 {
+			posts[index].Group = ""
+		} else {
+			groupNameRow := tx.QueryRow(`select groupName from igroup where groupid=?`, groupids[index])
+			groupNameRow.Scan(&posts[index].Group)
+		}
+
+		//通过postid获取topic
+		topicRow, err := tx.Query(`select topic from tag where postid=?`, singlePost.ID)
+		if err != nil {
+			fmt.Println("获取topic失败", err.Error())
+		} else {
+			for topicRow.Next() {
+				var topic string
+				topicRow.Scan(&topic)
+				posts[index].Topic = append(posts[index].Topic, topic)
+			}
 		}
 
 		//获取图片
@@ -159,6 +182,7 @@ func GetALlPost() (posts []structs.DataPost) {
 		var (
 			replyUserids []int
 			replyUserid  int
+			replys       []structs.Reply //单个post的回复列表
 		)
 		replysRow, err := tx.Query(`select fromUser,content
 		 from reply where postid=?`, singlePost.ID)
