@@ -24,6 +24,7 @@ func main() {
 	whisper.Get("/getTags", handlers.GetTags)
 	whisper.Get("/getGroups", handlers.GetGroups)
 	whisper.Get("/getAllPost", handlers.GetAllPost)
+	whisper.Get("/getAllReply", handlers.GetAllReply)
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)
 	whisper.Post("/newGroup", handlers.NewGroup)
