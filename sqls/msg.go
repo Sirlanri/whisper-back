@@ -45,3 +45,21 @@ func GetAllReply(mail string) (replys []structs.ReplyDetail) {
 	}
 	return
 }
+
+//ReadMsg SQL 验证权限，将reply标为已读
+func ReadMsg(mail string, replyid int) bool {
+	tx, _ := Db.Begin()
+	//通过mail获取用户id
+	idrow := tx.QueryRow(`select userid from user where mail=?`, mail)
+	var userid int
+	idrow.Scan(&userid)
+
+	//通过用户ID
+	_, err := tx.Exec(`UPDATE reply SET haveRead=1 WHERE replyid=? AND toUser=?`, replyid, userid)
+	if err != nil {
+		fmt.Println("更改reply已读状态失败", err.Error())
+		return false
+	}
+	tx.Commit()
+	return true
+}
