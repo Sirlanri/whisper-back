@@ -14,8 +14,8 @@ func GetUserInfo(mail string) (result structs.UserInfo) {
 		err     error
 		powerid int
 	)
-	row1 := tx.QueryRow("select userid,userName,intro,avatar,bannar,power from user where mail=?", mail)
-	row1.Scan(&userid, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	row1 := tx.QueryRow("select userid,mail,userName,intro,avatar,bannar,power from user where mail=?", mail)
+	row1.Scan(&userid, &result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
 	if powerid == 1 {
 		result.Power = "user"
 	} else {

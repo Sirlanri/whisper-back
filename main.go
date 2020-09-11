@@ -20,7 +20,7 @@ func main() {
 	whisper.Post("/regist", handlers.Regist)
 	whisper.Get("/logout", handlers.Logout)
 	whisper.Get("/getUserInfo", handlers.GetUserInfo)
-	whisper.Get("/GetUserInfoByCookie", handlers.GetUserInfoByCookie)
+	whisper.Get("/getUserInfoByCookie", handlers.GetUserInfoByCookie)
 	whisper.Get("/getGroupNames", handlers.GetGroupNames)
 	whisper.Get("/getTags", handlers.GetTags)
 	whisper.Get("/getGroups", handlers.GetGroups)
