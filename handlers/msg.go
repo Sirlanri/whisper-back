@@ -36,3 +36,15 @@ func ReadMsg(ctx iris.Context) {
 
 	}
 }
+
+//NewReply handler 新回复
+func NewReply(ctx iris.Context) {
+	var resRelpy structs.ResNewReply
+	ctx.ReadJSON(&resRelpy)
+	mail := serves.GetUserMail(ctx)
+	result, info := sqls.NewReply(resRelpy, mail)
+	if !result {
+		ctx.StatusCode(iris.StatusUnauthorized)
+	}
+	ctx.WriteString(info)
+}

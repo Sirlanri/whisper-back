@@ -63,3 +63,45 @@ func ReadMsg(mail string, replyid int) bool {
 	tx.Commit()
 	return true
 }
+
+//NewReply SQL 将新回复插入数据库
+func NewReply(reply structs.ResNewReply, mail string) (result bool, info string) {
+	tx, _ := Db.Begin()
+
+	result = true
+	//通过被回复人的name获取其id
+	useridRow := tx.QueryRow(`select userid from user where userName=?`, reply.Name)
+	var (
+		receverid int
+		senderid  int
+	)
+
+	//被回复人的id
+	err := useridRow.Scan(&receverid)
+	if err != nil {
+		fmt.Println("找不到此用户：", err.Error())
+		info = "找不到此用户"
+		result = false
+	}
+	//消息发送人的id
+	useridRow = tx.QueryRow(`select userid from user where mail=?`, mail)
+	err = useridRow.Scan(&senderid)
+	if err != nil {
+		fmt.Println("找不到此用户：", err.Error())
+		info = "找不到此用户"
+		result = false
+	}
+
+	//将回复写入数据库
+	_, err = tx.Exec(`insert into reply (postid,fromUser,toUser,content)
+	 values (?,?,?,?)`, reply.ID, senderid, receverid, reply.Content)
+	if err != nil {
+		fmt.Println("reply写入数据库出错", err.Error())
+		info = "reply写入数据库出错"
+		result = false
+	}
+	tx.Commit()
+	info = "回复成功"
+
+	return
+}

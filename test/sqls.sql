@@ -44,4 +44,4 @@ SELECT  * FROM post  ORDER BY postid DESC  LIMIT 20;
 
 UPDATE reply SET haveRead=1 WHERE replyid=6 AND toUser=1;
 
-UPDATE reply SET haveRead=1 WHERE replyid=6 AND toUser=1;
+UPDATE reply SET haveRead=0 WHERE replyid=6 ;
