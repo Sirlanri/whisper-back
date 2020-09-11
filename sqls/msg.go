@@ -15,7 +15,7 @@ func GetAllReply(mail string) (replys []structs.ReplyDetail) {
 	idRow.Scan(&userid)
 
 	//通过用户ID查询此用户接收的reply
-	replyRow, err := tx.Query(`select replyid,fromUser,content,haveRead 
+	replyRow, err := tx.Query(`select replyid,postid,fromUser,content,haveRead 
 	from reply where toUser=?`, userid)
 	if err != nil {
 		fmt.Println("查询用户回复出错", err.Error())
@@ -30,7 +30,7 @@ func GetAllReply(mail string) (replys []structs.ReplyDetail) {
 			reply  structs.ReplyDetail //暂存回复
 			userid int
 		)
-		err = replyRow.Scan(&reply.ID, &userid, &reply.Content, &reply.HaveRead)
+		err = replyRow.Scan(&reply.ID, &reply.Postid, &userid, &reply.Content, &reply.HaveRead)
 		if err != nil {
 			fmt.Println("写入ReplyRow出错", err.Error())
 		}
