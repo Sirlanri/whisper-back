@@ -8,4 +8,5 @@ type UserInfo struct {
 	Bannar     string `json:"bannar"`
 	PostCount  int    `json:"postCount"`
 	ReplyCount int    `json:"replyCount"`
+	Power      string `json:"power"`
 }

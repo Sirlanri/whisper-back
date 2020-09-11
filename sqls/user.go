@@ -9,11 +9,18 @@ import (
 传入mail，ctx */
 func GetUserInfo(mail string) (result structs.UserInfo) {
 	tx, _ := Db.Begin()
-	var userid int
-	var err error
-	row1 := tx.QueryRow("select userid,userName,intro,avatar,bannar from user where mail=?", mail)
-	row1.Scan(&userid, &result.Name, &result.Intro, &result.Avatar, &result.Bannar)
-
+	var (
+		userid  int
+		err     error
+		powerid int
+	)
+	row1 := tx.QueryRow("select userid,userName,intro,avatar,bannar,power from user where mail=?", mail)
+	row1.Scan(&userid, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	if powerid == 1 {
+		result.Power = "user"
+	} else {
+		result.Power = "admin"
+	}
 	postcount := tx.QueryRow("select count(*) from post where publisher=?", userid)
 	err = postcount.Scan(&result.PostCount)
 	if err != nil {

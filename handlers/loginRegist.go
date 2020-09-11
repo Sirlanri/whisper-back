@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"whisper/serves"
+	"whisper/sqls"
 	"whisper/structs"
 
 	"github.com/kataras/iris/v12"
@@ -60,4 +61,17 @@ func Regist(ctx iris.Context) {
  */
 func Logout(ctx iris.Context) {
 	serves.ClearPermiss(ctx)
+}
+
+/*GetUserInfoByCookie handler
+通过cookie获取用户信息，用于刷新页面后免登录*/
+func GetUserInfoByCookie(ctx iris.Context) {
+	mail := serves.GetUserMail(ctx)
+	if mail == "" {
+		ctx.StatusCode(iris.StatusUnauthorized)
+		ctx.WriteString("cookie无效，请重新登录")
+		return
+	}
+	result := sqls.GetUserInfo(mail)
+	ctx.JSON(result)
 }
