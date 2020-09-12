@@ -29,6 +29,7 @@ func main() {
 	whisper.Get("/getAllReply", handlers.GetAllReply)
 	whisper.Get("/readMsg", handlers.ReadMsg)
 	whisper.Get("/changeAvatar", handlers.ChangeAvatar)
+	whisper.Get("/changeBannar", handlers.ChangeBannar)
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)
 	whisper.Post("/newGroup", handlers.NewGroup)

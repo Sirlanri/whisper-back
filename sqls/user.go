@@ -52,3 +52,17 @@ func ChangeAvatar(url string, userid int) bool {
 	tx.Commit()
 	return true
 }
+
+/*ChangeBannar SQL
+改变用户头像，将新URL写入数据库
+操作成功，返回true*/
+func ChangeBannar(url string, userid int) bool {
+	tx, _ := Db.Begin()
+	_, err := tx.Exec(`update user set bannar=? where userid=?`, url, userid)
+	if err != nil {
+		fmt.Println("升级bannar URL出错", err.Error())
+		return false
+	}
+	tx.Commit()
+	return true
+}

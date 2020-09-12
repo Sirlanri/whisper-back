@@ -36,3 +36,24 @@ func ChangeAvatar(ctx iris.Context) {
 		ctx.WriteString("修改头像成功")
 	}
 }
+
+/*ChangeBannar handler
+接收新bannar的URL */
+func ChangeBannar(ctx iris.Context) {
+	//获取用户id
+	userid := serves.GetUserID(ctx)
+	//新头像的URL
+	bannar := ctx.URLParam("url")
+	if bannar == "" {
+		ctx.StatusCode(404)
+		ctx.WriteString("传入参数有误")
+		return
+	}
+	result := sqls.ChangeBannar(bannar, userid)
+	if !result {
+		ctx.StatusCode(404)
+		ctx.WriteString("修改bannar URL出错")
+	} else {
+		ctx.WriteString("修改bannar成功")
+	}
+}
