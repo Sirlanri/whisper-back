@@ -38,3 +38,17 @@ func GetUserInfo(userid int) (result structs.UserInfo) {
 	}
 	return
 }
+
+/*ChangeAvatar SQL
+改变用户头像，将新URL写入数据库
+操作成功，返回true*/
+func ChangeAvatar(url string, userid int) bool {
+	tx, _ := Db.Begin()
+	_, err := tx.Exec(`update user set avatar=? where userid=?`, url, userid)
+	if err != nil {
+		fmt.Println("升级头像URL出错", err.Error())
+		return false
+	}
+	tx.Commit()
+	return true
+}

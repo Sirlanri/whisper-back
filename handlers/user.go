@@ -15,3 +15,24 @@ func GetUserInfo(ctx iris.Context) {
 	result := sqls.GetUserInfo(userid)
 	ctx.JSON(result)
 }
+
+/*ChangeAvatar handler
+接收新头像的URL */
+func ChangeAvatar(ctx iris.Context) {
+	//获取用户id
+	userid := serves.GetUserID(ctx)
+	//新头像的URL
+	avatar := ctx.URLParam("url")
+	if avatar == "" {
+		ctx.StatusCode(404)
+		ctx.WriteString("传入参数有误")
+		return
+	}
+	result := sqls.ChangeAvatar(avatar, userid)
+	if !result {
+		ctx.StatusCode(404)
+		ctx.WriteString("修改头像URL出错")
+	} else {
+		ctx.WriteString("修改头像成功")
+	}
+}
