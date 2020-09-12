@@ -30,6 +30,7 @@ func main() {
 	whisper.Get("/readMsg", handlers.ReadMsg)
 	whisper.Get("/changeAvatar", handlers.ChangeAvatar)
 	whisper.Get("/changeBannar", handlers.ChangeBannar)
+	whisper.Post("/changeInfo", handlers.ChangeInfo)
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)
 	whisper.Post("/newGroup", handlers.NewGroup)

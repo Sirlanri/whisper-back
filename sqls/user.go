@@ -66,3 +66,17 @@ func ChangeBannar(url string, userid int) bool {
 	tx.Commit()
 	return true
 }
+
+/*ChangeInfo SQL
+修改用户资料  传入修改结构体和id*/
+func ChangeInfo(res structs.ResChangeInfo, userid int) bool {
+	tx, _ := Db.Begin()
+	_, err := tx.Exec(`update user set mail=?,userName=?,intro=? 
+	where userid=?`, res.Mail, res.Name, res.Intro, userid)
+	if err != nil {
+		fmt.Println("修改用户资料失败", err.Error())
+		return false
+	}
+	tx.Commit()
+	return true
+}

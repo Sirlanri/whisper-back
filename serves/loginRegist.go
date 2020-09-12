@@ -31,7 +31,7 @@ func Myhash(pw string) string {
 
 //Regist 接受用户名、邮箱、密码
 func Regist(name, mail, pw string) (result string, code int) {
-	if !check(name, mail) {
+	if !Check(name, mail) {
 		result = "用户名或邮箱格式不正确，请检查后输入"
 		code = 202
 	} else {
@@ -40,8 +40,8 @@ func Regist(name, mail, pw string) (result string, code int) {
 	return
 }
 
-//正则表达式检验用户创建的用户名，邮箱是否合理（不与数据库查重）
-func check(name, mail string) bool {
+//Check 正则表达式检验用户创建的用户名，邮箱是否合理（不与数据库查重） 合法返回true
+func Check(name, mail string) bool {
 	length := strings.Count(name, "")
 	if length == 0 {
 		return false
@@ -51,7 +51,7 @@ func check(name, mail string) bool {
 	result := mailres.MatchString(mail)
 	if result {
 		return true
-	} else {
-		return false
 	}
+	return false
+
 }

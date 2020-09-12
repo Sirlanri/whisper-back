@@ -11,3 +11,11 @@ type UserInfo struct {
 	ReplyCount int    `json:"replyCount"`
 	Power      string `json:"power"`
 }
+
+/*ResChangeInfo JSON
+修改资料，前端传入的信息*/
+type ResChangeInfo struct {
+	Name  string `json:"name"`
+	Mail  string `json:"mail"`
+	Intro string `json:"intro"`
+}
