@@ -6,13 +6,8 @@ import (
 )
 
 //GetAllReply SQL 获取全部的回复
-func GetAllReply(mail string) (replys []structs.ReplyDetail) {
+func GetAllReply(userid int) (replys []structs.ReplyDetail) {
 	tx, _ := Db.Begin()
-
-	//通过mail获取当前登录用户的id
-	var userid int
-	idRow := tx.QueryRow(`select userid from user where mail=?`, mail)
-	idRow.Scan(&userid)
 
 	//通过用户ID查询此用户接收的reply
 	replyRow, err := tx.Query(`select replyid,postid,fromUser,content,haveRead 

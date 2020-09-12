@@ -10,9 +10,10 @@ import (
 
 //GetAllReply handler 获取全部回复详情
 func GetAllReply(ctx iris.Context) {
-	//从session中获取用户邮箱
-	mail := serves.GetUserMail(ctx)
-	replys := sqls.GetAllReply(mail)
+	//从session中获取用户id
+	userid := serves.GetUserID(ctx)
+
+	replys := sqls.GetAllReply(userid)
 	jsonData := map[string][]structs.ReplyDetail{
 		"replys": replys,
 	}
