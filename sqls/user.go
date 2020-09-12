@@ -6,16 +6,15 @@ import (
 )
 
 /*GetUserInfo SQL 获取用户的信息
-传入mail，ctx */
-func GetUserInfo(mail string) (result structs.UserInfo) {
+传入用户的userid */
+func GetUserInfo(userid int) (result structs.UserInfo) {
 	tx, _ := Db.Begin()
 	var (
-		userid  int
 		err     error
 		powerid int
 	)
-	row1 := tx.QueryRow("select userid,mail,userName,intro,avatar,bannar,power from user where mail=?", mail)
-	row1.Scan(&userid, &result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	row1 := tx.QueryRow("select mail,userName,intro,avatar,bannar,power from user where userid=?", userid)
+	row1.Scan(&result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
 	if powerid == 1 {
 		result.Power = "user"
 	} else {

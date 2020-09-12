@@ -66,12 +66,12 @@ func Logout(ctx iris.Context) {
 /*GetUserInfoByCookie handler
 通过cookie获取用户信息，用于刷新页面后免登录*/
 func GetUserInfoByCookie(ctx iris.Context) {
-	mail := serves.GetUserMail(ctx)
-	if mail == "" {
+	userid := serves.GetUserID(ctx)
+	if userid == 0 {
 		ctx.StatusCode(iris.StatusUnauthorized)
 		ctx.WriteString("cookie无效，请重新登录")
 		return
 	}
-	result := sqls.GetUserInfo(mail)
+	result := sqls.GetUserInfo(userid)
 	ctx.JSON(result)
 }

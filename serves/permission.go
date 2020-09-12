@@ -2,6 +2,7 @@ package serves
 
 import (
 	"fmt"
+	"whisper/sqls"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
@@ -18,6 +19,7 @@ func VisitorPermiss(ctx iris.Context, mail string) {
 	sessionUser := sess.Start(ctx)
 	sessionUser.Set("isLogin", true)
 	sessionUser.Set("mail", mail)
+	sessionUser.Set("userid", sqls.GetIDBymail(mail))
 }
 
 //AdminPermiss 管理员登录后，设置管理员权限
@@ -26,6 +28,7 @@ func AdminPermiss(ctx iris.Context, mail string) {
 	sessionAdmin.Set("admin", true)
 	sessionAdmin.Set("isLogin", true)
 	sessionAdmin.Set("mail", mail)
+	sessionAdmin.Set("userid", sqls.GetIDBymail(mail))
 }
 
 //GetUserMail 从Session中获取用户邮箱
@@ -33,6 +36,14 @@ func GetUserMail(ctx iris.Context) (mail string) {
 	sessionMail := sess.Start(ctx)
 	mail = sessionMail.GetString("mail")
 	return
+}
+
+//GetUserID 从session中获取用户的id
+func GetUserID(ctx iris.Context) int {
+	sessionID := sess.Start(ctx)
+	//如果cookie有问题，没有这个key，就返回0
+	userid := sessionID.GetIntDefault("userid", 0)
+	return userid
 }
 
 //ClearPermiss 注销登录，清除用户权限

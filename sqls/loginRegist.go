@@ -41,3 +41,13 @@ func Regist(name, mail, pw string) (result string, code int) {
 	}
 	return
 }
+
+//GetIDBymail SQL 登录时通过邮箱获取id，保存在session中
+func GetIDBymail(mail string) int {
+	tx, _ := Db.Begin()
+	idrow := tx.QueryRow(`select userid from user where mail=?`, mail)
+	var userid int
+	idrow.Scan(&userid)
+	tx.Commit()
+	return userid
+}
