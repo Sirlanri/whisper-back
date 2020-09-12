@@ -21,12 +21,12 @@ func NewPost(ctx iris.Context) {
 		ctx.WriteString("传入格式有误")
 	}
 	//从session中获取用户mail
-	mail := serves.GetUserMail(ctx)
-	if mail == "" {
+	userid := serves.GetUserID(ctx)
+	if userid == 0 {
 		ctx.WriteString("用户未登录")
 		return
 	}
-	sqls.NewPost(ResPost, mail)
+	sqls.NewPost(ResPost, userid)
 }
 
 /*UploadPics handler 上传图片

@@ -7,22 +7,14 @@ import (
 )
 
 //NewPost 负责处理前端接收到的数据
-func NewPost(res structs.ResPost, mail string) {
+func NewPost(res structs.ResPost, userid int) {
 	var (
-		err             error
-		userid, groupid int
+		err     error
+		groupid int
 	)
 	//计时
 	t1 := time.Now()
-
 	tx, _ := Db.Begin()
-	//通过邮箱获取用户id
-	idRow := tx.QueryRow("select userid from user where mail=?", mail)
-	err = idRow.Scan(&userid)
-	if err != nil {
-		fmt.Println("SQL获取用户ID出错", err.Error())
-	}
-	fmt.Println("获取用户ID ", time.Since(t1))
 
 	//获取群组id
 	groupRow := tx.QueryRow("select groupid from igroup where groupName=?", res.Group)
