@@ -42,12 +42,8 @@ func GetAllReply(userid int) (replys []structs.ReplyDetail) {
 }
 
 //ReadMsg SQL 验证权限，将reply标为已读
-func ReadMsg(mail string, replyid int) bool {
+func ReadMsg(userid int, replyid int) bool {
 	tx, _ := Db.Begin()
-	//通过mail获取用户id
-	idrow := tx.QueryRow(`select userid from user where mail=?`, mail)
-	var userid int
-	idrow.Scan(&userid)
 
 	//通过用户ID
 	_, err := tx.Exec(`UPDATE reply SET haveRead=1 WHERE replyid=? AND toUser=?`, replyid, userid)
@@ -60,7 +56,7 @@ func ReadMsg(mail string, replyid int) bool {
 }
 
 //NewReply SQL 将新回复插入数据库
-func NewReply(reply structs.ResNewReply, mail string) (result bool, info string) {
+func NewReply(reply structs.ResNewReply, userid int) (result bool, info string) {
 	tx, _ := Db.Begin()
 
 	result = true
@@ -68,7 +64,6 @@ func NewReply(reply structs.ResNewReply, mail string) (result bool, info string)
 	useridRow := tx.QueryRow(`select userid from user where userName=?`, reply.Name)
 	var (
 		receverid int
-		senderid  int
 	)
 
 	//被回复人的id
@@ -78,18 +73,10 @@ func NewReply(reply structs.ResNewReply, mail string) (result bool, info string)
 		info = "找不到此用户"
 		result = false
 	}
-	//消息发送人的id
-	useridRow = tx.QueryRow(`select userid from user where mail=?`, mail)
-	err = useridRow.Scan(&senderid)
-	if err != nil {
-		fmt.Println("找不到此用户：", err.Error())
-		info = "找不到此用户"
-		result = false
-	}
 
 	//将回复写入数据库
 	_, err = tx.Exec(`insert into reply (postid,fromUser,toUser,content)
-	 values (?,?,?,?)`, reply.ID, senderid, receverid, reply.Content)
+	 values (?,?,?,?)`, reply.ID, userid, receverid, reply.Content)
 	if err != nil {
 		fmt.Println("reply写入数据库出错", err.Error())
 		info = "reply写入数据库出错"
