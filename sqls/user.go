@@ -39,6 +39,50 @@ func GetUserInfo(userid int) (result structs.UserInfo) {
 	return
 }
 
+/*GetUserInfoByName SQL
+通过name获取用户的信息
+传入用户的name */
+func GetUserInfoByName(userName string) (result structs.UserInfo) {
+	tx, _ := Db.Begin()
+	var (
+		err     error
+		powerid int
+		userid  int
+	)
+	//通过name获取id
+	useridRow := tx.QueryRow(`select userid from user where userName=?`, userName)
+	err = useridRow.Scan(&userid)
+	if err != nil {
+		fmt.Println("通过name获取id出错", err.Error())
+		return
+	}
+
+	row1 := tx.QueryRow("select mail,userName,intro,avatar,bannar,power from user where userid=?", userid)
+	row1.Scan(&result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	if powerid == 1 {
+		result.Power = "user"
+	} else {
+		result.Power = "admin"
+	}
+	postcount := tx.QueryRow("select count(*) from post where publisher=?", userid)
+	err = postcount.Scan(&result.PostCount)
+	if err != nil {
+		println("post写入出错", err.Error())
+	}
+
+	replyCount := tx.QueryRow("select count(*) from reply where fromUser=?", userid)
+	err = replyCount.Scan(&result.ReplyCount)
+	if err != nil {
+		println("reply写入出错", err.Error())
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("获取用户信息-执行SQL出错 ", err.Error())
+	}
+	return
+}
+
 /*ChangeAvatar SQL
 改变用户头像，将新URL写入数据库
 操作成功，返回true*/

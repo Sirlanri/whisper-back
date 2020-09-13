@@ -9,12 +9,15 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-/*GetUserInfo handler
-登录后，获取当前登录用户的信息  */
-func GetUserInfo(ctx iris.Context) {
-	userid := serves.GetUserID(ctx)
-	//mail := ctx.URLParams().Get("mail")
-	result := sqls.GetUserInfo(userid)
+/*GetUserInfoByName handler
+传入用户昵称，用户的信息  */
+func GetUserInfoByName(ctx iris.Context) {
+	name := ctx.URLParam("name")
+	if name == "" {
+		ctx.StatusCode(404)
+		ctx.WriteString("传入数据有误")
+	}
+	result := sqls.GetUserInfoByName(name)
 	ctx.JSON(result)
 }
 

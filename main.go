@@ -19,7 +19,8 @@ func main() {
 	whisper.Post("/login", handlers.Login)
 	whisper.Post("/regist", handlers.Regist)
 	whisper.Get("/logout", handlers.Logout)
-	whisper.Get("/getUserInfo", handlers.GetUserInfo)
+
+	whisper.Get("/getUserInfoByName", handlers.GetUserInfoByName)
 	whisper.Get("/getUserInfoByCookie", handlers.GetUserInfoByCookie)
 	whisper.Get("/getGroupNames", handlers.GetGroupNames)
 	whisper.Get("/getTags", handlers.GetTags)
@@ -27,10 +28,13 @@ func main() {
 	whisper.Get("/getAllPost", handlers.GetAllPost)
 	whisper.Get("/getPostByUser", handlers.GetPostByUser)
 	whisper.Get("/getAllReply", handlers.GetAllReply)
+
 	whisper.Get("/readMsg", handlers.ReadMsg)
+
 	whisper.Get("/changeAvatar", handlers.ChangeAvatar)
 	whisper.Get("/changeBannar", handlers.ChangeBannar)
 	whisper.Post("/changeInfo", handlers.ChangeInfo)
+
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)
 	whisper.Post("/newGroup", handlers.NewGroup)
