@@ -95,3 +95,20 @@ func GetPostByUser(ctx iris.Context) {
 	}
 	ctx.JSON(jsondata)
 }
+
+/*GetPostByGroup handler
+通过群组id，获取此群组的post 限制20*/
+func GetPostByGroup(ctx iris.Context) {
+	groupid, err := ctx.URLParamInt("id")
+	if err != nil {
+		fmt.Println("传入参数错误", err.Error())
+		ctx.StatusCode(404)
+		ctx.WriteString("传入参数错误")
+		return
+	}
+	posts := sqls.GetPostByGroup(groupid)
+	jsondata := map[string][]structs.DataPost{
+		"posts": posts,
+	}
+	ctx.JSON(jsondata)
+}

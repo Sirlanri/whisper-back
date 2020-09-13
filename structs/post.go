@@ -14,6 +14,7 @@ type DataPost struct {
 	Avatar  string   `json:"avatar"`
 	User    string   `json:"username"`
 	Group   string   `json:"groupname"`
+	GroupID int      `json:"groupid"`
 	Content string   `json:"content"`
 	Topic   []string `json:"topic"`
 	Time    string   `json:"time"`
