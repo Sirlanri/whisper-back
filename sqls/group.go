@@ -104,3 +104,27 @@ func DelGroupOnly(groupid int) bool {
 	tx.Commit()
 	return true
 }
+
+/*DelGroupAll SQL
+删除群信息，并删除群内全部post
+传入group的id*/
+func DelGroupAll(groupid int) bool {
+	tx, _ := Db.Begin()
+
+	//删除群
+	_, err := tx.Exec(`delete from igroup where groupid=?`, groupid)
+	if err != nil {
+		fmt.Println("SQL 删除群出错", err.Error())
+	}
+
+	//删除id为群的全部post
+	numsRow, err := tx.Exec(`delete from post where groupid=?`, groupid)
+	if err != nil {
+		fmt.Println("删除群的全部post出错", err.Error())
+		return false
+	}
+	nums, _ := numsRow.RowsAffected()
+	tx.Commit()
+	fmt.Printf("删除的群ID：%d，影响了%d条post", groupid, nums)
+	return true
+}

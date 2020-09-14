@@ -56,3 +56,22 @@ func DelGroupOnly(ctx iris.Context) {
 		ctx.WriteString("删除成功")
 	}
 }
+
+/*DelGroupAll handler
+删除群信息，并删除群内全部post*/
+func DelGroupAll(ctx iris.Context) {
+	groupid, err := ctx.URLParamInt("id")
+	if err != nil {
+		fmt.Println("删除群，传入id错误")
+		ctx.StatusCode(404)
+		ctx.WriteString("传入id不合法")
+		return
+	}
+	result := sqls.DelGroupAll(groupid)
+	if !result {
+		ctx.StatusCode(404)
+		ctx.WriteString("删除群失败")
+	} else {
+		ctx.WriteString("删除成功")
+	}
+}
