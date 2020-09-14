@@ -37,3 +37,22 @@ func NewGroup(ctx iris.Context) {
 	}
 
 }
+
+/*DelGroupOnly handler
+删除群组信息，把群内的post修改为无群状态*/
+func DelGroupOnly(ctx iris.Context) {
+	groupid, err := ctx.URLParamInt("id")
+	if err != nil {
+		fmt.Println("删除群，传入id错误")
+		ctx.StatusCode(404)
+		ctx.WriteString("传入id不合法")
+		return
+	}
+	result := sqls.DelGroupOnly(groupid)
+	if !result {
+		ctx.StatusCode(404)
+		ctx.WriteString("删除群失败")
+	} else {
+		ctx.WriteString("删除成功")
+	}
+}

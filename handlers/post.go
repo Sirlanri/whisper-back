@@ -114,13 +114,14 @@ func GetPostByGroup(ctx iris.Context) {
 }
 
 /*DelPost handler
-删除post*/
+删除post 传入post的id*/
 func DelPost(ctx iris.Context) {
 	postid, err := ctx.URLParamInt("id")
 	if err != nil {
 		fmt.Println("前端传入数据不合法", err.Error())
 		ctx.StatusCode(404)
 		ctx.WriteString("传入数据不合法")
+		return
 	}
 	result := sqls.DelPost(postid)
 	if !result {

@@ -80,3 +80,27 @@ func NewGroup2(res structs.ResGroup) bool {
 	return true
 
 }
+
+/*DelGroupOnly SQL
+删除一个群，保留并修改其post*/
+func DelGroupOnly(groupid int) bool {
+	tx, _ := Db.Begin()
+
+	//删除群
+	_, err := tx.Exec(`delete from igroup where groupid=?`, groupid)
+	if err != nil {
+		fmt.Println("SQL 删除群出错", err.Error())
+	}
+
+	//将群内的post全部修改状态
+	numsRow, err := tx.Exec(`update post set groupid=0 where groupid=?`, groupid)
+	if err != nil {
+		fmt.Println("修改群post的id出错", err.Error())
+		return false
+	}
+	nums, _ := numsRow.RowsAffected()
+	fmt.Printf("删除的群ID：%d，影响了%d条post", groupid, nums)
+
+	tx.Commit()
+	return true
+}
