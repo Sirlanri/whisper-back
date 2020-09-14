@@ -11,7 +11,7 @@ func GetAllReply(userid int) (replys []structs.ReplyDetail) {
 
 	//通过用户ID查询此用户接收的reply
 	replyRow, err := tx.Query(`select replyid,postid,fromUser,content,haveRead 
-	from reply where toUser=?`, userid)
+	from reply where toUser=? ORDER BY replyid DESC`, userid)
 	if err != nil {
 		fmt.Println("查询用户回复出错", err.Error())
 	}
