@@ -112,3 +112,21 @@ func GetPostByGroup(ctx iris.Context) {
 	}
 	ctx.JSON(jsondata)
 }
+
+/*DelPost handler
+删除post*/
+func DelPost(ctx iris.Context) {
+	postid, err := ctx.URLParamInt("id")
+	if err != nil {
+		fmt.Println("前端传入数据不合法", err.Error())
+		ctx.StatusCode(404)
+		ctx.WriteString("传入数据不合法")
+	}
+	result := sqls.DelPost(postid)
+	if !result {
+		ctx.StatusCode(404)
+		ctx.WriteString("删除Post失败")
+	} else {
+		ctx.WriteString("删除成功")
+	}
+}

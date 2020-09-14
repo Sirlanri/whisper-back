@@ -416,3 +416,16 @@ func GetPostByGroup(groupid int) (posts []structs.DataPost) {
 	tx.Commit()
 	return
 }
+
+/*DelPost SQL
+删除某post，传入post的id*/
+func DelPost(postid int) bool {
+	tx, _ := Db.Begin()
+	_, err := tx.Exec(`DELETE FROM post where postid=?`, postid)
+	if err != nil {
+		fmt.Println("删除post出错", err.Error())
+		return false
+	}
+	err = tx.Commit()
+	return true
+}
