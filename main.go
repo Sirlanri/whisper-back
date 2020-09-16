@@ -39,6 +39,7 @@ func main() {
 	whisper.Get("/delPost", handlers.DelPost)
 	whisper.Get("/delGroupOnly", handlers.DelGroupOnly)
 	whisper.Get("/delGroupAll", handlers.DelGroupAll)
+	whisper.Get("/delUserByPost",handlers.DelUserByPost)
 
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)

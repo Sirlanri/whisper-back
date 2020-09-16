@@ -48,3 +48,5 @@ UPDATE reply SET haveRead=0 WHERE replyid=6 ;
 
 select replyid,postid,fromUser,content,haveRead 
 	from reply where toUser=1 ORDER BY replyid DESC ;
+
+select mail,userName,intro,avatar,bannar,power from user where userid=12;

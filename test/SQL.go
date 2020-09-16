@@ -14,7 +14,7 @@ var Db *sql.DB
 //初始化，自动创建db指针
 func main() {
 	Db = ConnectDB()
-	Test()
+	insertalot()
 }
 
 //ConnectDB 初始化时，连接数据库
@@ -78,4 +78,39 @@ func Test() {
 		println(err.Error())
 	}
 
+}
+
+func insertalot() {
+	tx, _ := Db.Begin()
+
+	//计时
+	t1 := time.Now()
+	for i := 0; i < 10000; i++ {
+		word := "当前插入数据："
+		tx.Exec(`insert into post (publisher,groupid,content) 
+		values (?,?,?)`, 1, 24, word)
+
+	}
+
+	tx.Commit()
+	elapsed := time.Since(t1)
+	fmt.Println("共计耗时 ", elapsed)
+}
+
+func updateTest() {
+	tx, _ := Db.Begin()
+
+	//计时
+	t1 := time.Now()
+	for i := 1000; i < 1003; i++ {
+		word := "当前插入数据：" + string(i)
+		_, err := tx.Exec(`update post set content=? where postid=?`, word, i)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	}
+
+	tx.Commit()
+	elapsed := time.Since(t1)
+	fmt.Println("共计耗时 ", elapsed)
 }

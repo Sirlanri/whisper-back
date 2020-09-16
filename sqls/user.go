@@ -14,7 +14,10 @@ func GetUserInfo(userid int) (result structs.UserInfo) {
 		powerid int
 	)
 	row1 := tx.QueryRow("select mail,userName,intro,avatar,bannar,power from user where userid=?", userid)
-	row1.Scan(&result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	err = row1.Scan(&result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	if err != nil {
+		fmt.Println("读取用户信息失败", err.Error())
+	}
 	if powerid == 1 {
 		result.Power = "user"
 	} else {
@@ -58,7 +61,10 @@ func GetUserInfoByName(userName string) (result structs.UserInfo) {
 	}
 
 	row1 := tx.QueryRow("select mail,userName,intro,avatar,bannar,power from user where userid=?", userid)
-	row1.Scan(&result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	err = row1.Scan(&result.Mail, &result.Name, &result.Intro, &result.Avatar, &result.Bannar, &powerid)
+	if err != nil {
+		fmt.Println("读取用户信息失败", err.Error())
+	}
 	if powerid == 1 {
 		result.Power = "user"
 	} else {
@@ -123,4 +129,36 @@ func ChangeInfo(res structs.ResChangeInfo, userid int) bool {
 	}
 	tx.Commit()
 	return true
+}
+
+/*DelUserByPostID SQL
+删除某个用户及其post，通过post的id
+*/
+func DelUserByPostID(postid int) bool {
+	tx, _ := Db.Begin()
+
+	//获取用户的id
+	useridRow := tx.QueryRow(`select publisher from post where postid=?`, postid)
+	var userid int
+	err := useridRow.Scan(&userid)
+	if err != nil {
+		fmt.Println("通过post获取用户id失败", err.Error())
+		return false
+	}
+
+	//删除用户
+	_, err = tx.Exec(`delete from user where userid=?`, userid)
+	if err != nil {
+		fmt.Println("删除用户失败", err.Error())
+		return false
+	}
+
+	//删除用户发布的post
+	_, err = tx.Exec(`delete from post where publisher=?`, userid)
+	if err != nil {
+		fmt.Println("删除用户发布的post出错", err.Error())
+		return false
+	}
+	return true
+
 }

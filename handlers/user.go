@@ -94,3 +94,23 @@ func ChangeInfo(ctx iris.Context) {
 	ctx.WriteString("修改资料成功，请刷新页面查看")
 
 }
+
+/*DelUserByPost handler
+删除用户，传入post的id
+ */
+func DelUserByPost(ctx iris.Context) {
+	postid,err:=ctx.URLParamInt("id")
+	if err != nil {
+		fmt.Println("前端传入数据有误",err.Error())
+		ctx.StatusCode(404)
+		ctx.WriteString("传入数据不合法")
+		return
+	}
+	result:=sqls.DelUserByPostID(postid)
+	if !result {
+		ctx.StatusCode(403)
+		ctx.WriteString("删除用户失败")
+		return
+	}
+	ctx.WriteString("用户已被成功删除")
+}
