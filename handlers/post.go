@@ -18,11 +18,13 @@ func NewPost(ctx iris.Context) {
 
 	if err != nil {
 		fmt.Println("NewPost出错，前端传入格式错误", err.Error())
+		ctx.StatusCode(iris.StatusForbidden)
 		ctx.WriteString("传入格式有误")
 	}
 	//从session中获取用户mail
 	userid := serves.GetUserID(ctx)
 	if userid == 0 {
+		ctx.StatusCode(iris.StatusForbidden)
 		ctx.WriteString("用户未登录")
 		return
 	}
