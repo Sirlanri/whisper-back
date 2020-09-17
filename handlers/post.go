@@ -139,3 +139,22 @@ func DelPost(ctx iris.Context) {
 		ctx.WriteString("删除成功")
 	}
 }
+
+/*DelMyPost handler 删除自己发送的某条post
+传入postid*/
+func DelMyPost(ctx iris.Context) {
+	postid, err := ctx.URLParamInt("id")
+	if err != nil {
+		fmt.Println("删除自己发送的post，传入值有误", err.Error())
+		ctx.StatusCode(404)
+		ctx.WriteString("传入参数有误")
+	}
+	userid := serves.GetUserID(ctx)
+	result := sqls.DelMyPost(postid, userid)
+	if !result {
+		ctx.StatusCode(404)
+		ctx.WriteString("传入参数有误")
+		return
+	}
+
+}

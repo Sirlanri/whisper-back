@@ -429,3 +429,21 @@ func DelPost(postid int) bool {
 	err = tx.Commit()
 	return true
 }
+
+/*DelMyPost SQL 删除用户自己发送的post
+ */
+func DelMyPost(postid, userid int) bool {
+	tx, _ := Db.Begin()
+	_, err := tx.Exec(`delete from post where postid=? and publisher=?`,
+		postid, userid)
+	if err != nil {
+		fmt.Println("删除用户post出错", err.Error())
+		return false
+	}
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("删除用户post，执行SQL出错", err.Error())
+		return false
+	}
+	return true
+}
