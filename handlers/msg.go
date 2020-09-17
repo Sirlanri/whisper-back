@@ -42,6 +42,11 @@ func ReadMsg(ctx iris.Context) {
 func NewReply(ctx iris.Context) {
 	var resRelpy structs.ResNewReply
 	ctx.ReadJSON(&resRelpy)
+	if resRelpy.Content == "" {
+		ctx.StatusCode(403)
+		ctx.WriteString("内容不能为空哦")
+		return
+	}
 	userid := serves.GetUserID(ctx)
 	result, info := sqls.NewReply(resRelpy, userid)
 	if !result {

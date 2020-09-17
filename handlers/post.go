@@ -20,6 +20,12 @@ func NewPost(ctx iris.Context) {
 		fmt.Println("NewPost出错，前端传入格式错误", err.Error())
 		ctx.StatusCode(iris.StatusForbidden)
 		ctx.WriteString("传入格式有误")
+		return
+	}
+	if ResPost.Content == "" {
+		ctx.StatusCode(403)
+		ctx.WriteString("内容不能为空哦")
+		return
 	}
 	//从session中获取用户mail
 	userid := serves.GetUserID(ctx)
