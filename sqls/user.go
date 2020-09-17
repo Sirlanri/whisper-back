@@ -73,13 +73,13 @@ func GetUserInfoByName(userName string) (result structs.UserInfo) {
 	postcount := tx.QueryRow("select count(*) from post where publisher=?", userid)
 	err = postcount.Scan(&result.PostCount)
 	if err != nil {
-		println("post写入出错", err.Error())
+		fmt.Println("post写入出错", err.Error())
 	}
 
 	replyCount := tx.QueryRow("select count(*) from reply where fromUser=?", userid)
 	err = replyCount.Scan(&result.ReplyCount)
 	if err != nil {
-		println("reply写入出错", err.Error())
+		fmt.Println("reply写入出错", err.Error())
 	}
 
 	err = tx.Commit()

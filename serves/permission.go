@@ -55,3 +55,10 @@ func ClearPermiss(ctx iris.Context) {
 	fmt.Println("用户注销 ", mail)
 	ctx.WriteString("注销成功")
 }
+
+/*IsAdmin 当前登录用户是否为管理员*/
+func IsAdmin(ctx iris.Context) bool {
+	sessAdmin := sess.Start(ctx)
+	check := sessAdmin.GetBooleanDefault("admin", false)
+	return check
+}

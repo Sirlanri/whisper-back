@@ -36,10 +36,10 @@ func main() {
 	whisper.Get("/changeBannar", handlers.ChangeBannar)
 	whisper.Post("/changeInfo", handlers.ChangeInfo)
 
-	whisper.Get("/delPost", handlers.DelPost)
-	whisper.Get("/delGroupOnly", handlers.DelGroupOnly)
-	whisper.Get("/delGroupAll", handlers.DelGroupAll)
-	whisper.Get("/delUserByPost",handlers.DelUserByPost)
+	whisper.Get("/delPost", handlers.Admin, handlers.DelPost)
+	whisper.Get("/delGroupOnly", handlers.Admin, handlers.DelGroupOnly)
+	whisper.Get("/delGroupAll", handlers.Admin, handlers.DelGroupAll)
+	whisper.Get("/delUserByPost", handlers.Admin, handlers.DelUserByPost)
 
 	whisper.Post("/uploadPics", handlers.UploadPics)
 	whisper.Post("/newPost", handlers.NewPost)

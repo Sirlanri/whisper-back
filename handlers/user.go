@@ -97,20 +97,31 @@ func ChangeInfo(ctx iris.Context) {
 
 /*DelUserByPost handler
 删除用户，传入post的id
- */
+*/
 func DelUserByPost(ctx iris.Context) {
-	postid,err:=ctx.URLParamInt("id")
+	postid, err := ctx.URLParamInt("id")
 	if err != nil {
-		fmt.Println("前端传入数据有误",err.Error())
+		fmt.Println("前端传入数据有误", err.Error())
 		ctx.StatusCode(404)
 		ctx.WriteString("传入数据不合法")
 		return
 	}
-	result:=sqls.DelUserByPostID(postid)
+	result := sqls.DelUserByPostID(postid)
 	if !result {
 		ctx.StatusCode(403)
 		ctx.WriteString("删除用户失败")
 		return
 	}
 	ctx.WriteString("用户已被成功删除")
+}
+
+/*Admin handler 判断管理员权限的中间件*/
+func Admin(ctx iris.Context) {
+	per := serves.IsAdmin(ctx)
+	if per {
+		ctx.Next()
+	} else {
+		ctx.StatusCode(iris.StatusForbidden)
+		ctx.WriteString("无管理员权限，gun！")
+	}
 }
