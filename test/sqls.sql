@@ -50,3 +50,11 @@ select replyid,postid,fromUser,content,haveRead
 	from reply where toUser=1 ORDER BY replyid DESC ;
 
 select mail,userName,intro,avatar,bannar,power from user where userid=12;
+
+SELECT * FROM post ORDER BY postid DESC LIMIT 0,20;
+
+SELECT  * FROM  post WHERE postid BETWEEN LAST(postid)-20 AND LAST(postid)
+    ORDER BY postid DESC ;
+
+SELECT * FROM (select * from post ORDER BY postid DESC ) demp
+ WHERE postid BETWEEN max(postid) AND max(postid)-20;

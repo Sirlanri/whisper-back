@@ -26,6 +26,7 @@ func main() {
 	whisper.Get("/getTags", handlers.GetTags)
 	whisper.Get("/getGroups", handlers.GetGroups)
 	whisper.Get("/getAllPost", handlers.GetAllPost)
+	whisper.Get("/getLazyPost", handlers.GetLazyPost)
 	whisper.Get("/getPostByUser", handlers.GetPostByUser)
 	whisper.Get("/getPostByGroup", handlers.GetPostByGroup)
 	whisper.Get("/getAllReply", handlers.GetAllReply)

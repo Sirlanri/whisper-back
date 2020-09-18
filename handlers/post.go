@@ -158,3 +158,14 @@ func DelMyPost(ctx iris.Context) {
 	}
 
 }
+
+/*GetLazyPost handler
+懒加载的方式获取post，传入一个值n，返回[n,n+20)条*/
+func GetLazyPost(ctx iris.Context) {
+	num := ctx.URLParamIntDefault("num", 0)
+	posts := sqls.GetLazyPost(num)
+	jsondata := map[string][]structs.DataPost{
+		"posts": posts,
+	}
+	ctx.JSON(jsondata)
+}
