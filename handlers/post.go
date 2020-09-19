@@ -97,7 +97,8 @@ func GetAllPost(ctx iris.Context) {
 通过用户名获取某个用户的post*/
 func GetPostByUser(ctx iris.Context) {
 	name := ctx.URLParam("name")
-	posts := sqls.GetALlPostByUser(name)
+	nums := ctx.URLParamIntDefault("num", 0)
+	posts := sqls.GetALlPostByUser(name, nums)
 	jsondata := map[string][]structs.DataPost{
 		"posts": posts,
 	}

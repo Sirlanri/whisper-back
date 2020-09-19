@@ -207,7 +207,7 @@ func GetALlPost() (posts []structs.DataPost) {
 }
 
 //GetALlPostByUser SQL 获取某个用户的全部post
-func GetALlPostByUser(name string) (posts []structs.DataPost) {
+func GetALlPostByUser(name string, num int) (posts []structs.DataPost) {
 	tx, _ := Db.Begin()
 	var (
 		userids []int
@@ -220,7 +220,8 @@ func GetALlPostByUser(name string) (posts []structs.DataPost) {
 	idRow := tx.QueryRow(`select userid from user where userName=?`, name)
 	idRow.Scan(&gotUserid)
 	//SQL获取全部post
-	postsRow, err := tx.Query(`SELECT * FROM post where publisher=? ORDER BY postid DESC LIMIT 20`, gotUserid)
+	postsRow, err := tx.Query(`SELECT * FROM post where publisher=? ORDER BY postid DESC LIMIT ?,20`,
+		gotUserid, num)
 	if err != nil {
 		fmt.Println("查询post列表出错", err.Error())
 	}
