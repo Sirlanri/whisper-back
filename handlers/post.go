@@ -115,7 +115,8 @@ func GetPostByGroup(ctx iris.Context) {
 		ctx.WriteString("传入参数错误")
 		return
 	}
-	posts := sqls.GetPostByGroup(groupid)
+	num := ctx.URLParamIntDefault("num", 0)
+	posts := sqls.GetPostByGroup(groupid, num)
 	jsondata := map[string][]structs.DataPost{
 		"posts": posts,
 	}

@@ -316,7 +316,7 @@ func GetALlPostByUser(name string, num int) (posts []structs.DataPost) {
 
 /*GetPostByGroup SQL
 传入群组id，返回该群组的post 限制20*/
-func GetPostByGroup(groupid int) (posts []structs.DataPost) {
+func GetPostByGroup(groupid int, num int) (posts []structs.DataPost) {
 	tx, _ := Db.Begin()
 
 	var (
@@ -326,7 +326,7 @@ func GetPostByGroup(groupid int) (posts []structs.DataPost) {
 		reply   structs.Reply //replys列表的单个回复元素
 	)
 	postsRow, err := tx.Query(`SELECT * FROM post where groupid=?
-	 ORDER BY postid DESC LIMIT 25`, groupid)
+	 ORDER BY postid DESC LIMIT ?,20`, groupid, num)
 	if err != nil {
 		fmt.Println("通过groupid查询post出错")
 	}
