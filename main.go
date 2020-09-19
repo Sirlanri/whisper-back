@@ -22,15 +22,17 @@ func main() {
 
 	whisper.Get("/getUserInfoByName", handlers.GetUserInfoByName)
 	whisper.Get("/getUserInfoByCookie", handlers.GetUserInfoByCookie)
-	whisper.Get("/getGroupNames", handlers.GetGroupNames)
+
 	whisper.Get("/getTags", handlers.GetTags)
+	whisper.Get("/getGroupNames", handlers.GetGroupNames)
 	whisper.Get("/getGroups", handlers.GetGroups)
+	whisper.Get("/getPostByGroup", handlers.GetPostByGroup)
+
 	whisper.Get("/getAllPost", handlers.GetAllPost)
 	whisper.Get("/getLazyPost", handlers.GetLazyPost)
 	whisper.Get("/getPostByUser", handlers.GetPostByUser)
-	whisper.Get("/getPostByGroup", handlers.GetPostByGroup)
-	whisper.Get("/getAllReply", handlers.GetAllReply)
 
+	whisper.Get("/getAllReply", handlers.GetAllReply)
 	whisper.Get("/readMsg", handlers.ReadMsg)
 
 	whisper.Get("/changeAvatar", handlers.ChangeAvatar)

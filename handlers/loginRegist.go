@@ -68,7 +68,7 @@ func Logout(ctx iris.Context) {
 func GetUserInfoByCookie(ctx iris.Context) {
 	userid := serves.GetUserID(ctx)
 	if userid == 0 {
-		ctx.StatusCode(iris.StatusUnauthorized)
+		ctx.StatusCode(201)
 		ctx.WriteString("cookie无效，请重新登录")
 		return
 	}
