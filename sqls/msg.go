@@ -87,3 +87,18 @@ func NewReply(reply structs.ResNewReply, userid int) (result bool, info string) 
 
 	return
 }
+
+/*DelReply SQL 删除回复
+传入replyid userid*/
+func DelReply(replyid, userid int) bool {
+	tx, _ := Db.Begin()
+
+	_, err := tx.Exec(`delete from reply where replyid=? and toUser=?`,
+		replyid, userid)
+	if err != nil {
+		fmt.Println("SQL 删除reply回复失败", err.Error())
+		return false
+	}
+	tx.Commit()
+	return true
+}

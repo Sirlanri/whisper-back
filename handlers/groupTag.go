@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"whisper/serves"
 	"whisper/sqls"
 	"whisper/structs"
 
@@ -21,6 +22,15 @@ func GetGroups(ctx iris.Context) {
 func NewGroup(ctx iris.Context) {
 	var res structs.ResGroup
 	ctx.ReadJSON(&res)
+
+	//检测用户是否已登录
+	userid := serves.GetUserID(ctx)
+	if userid == 0 {
+		ctx.StatusCode(iris.StatusForbidden)
+		ctx.WriteString("用户未登录")
+		return
+	}
+
 	//检测三个值是否都存在
 	if res.Intro != "" && res.Name != "" && res.Pic != "" {
 		result := sqls.NewGroup(res)

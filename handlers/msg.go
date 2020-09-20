@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"whisper/serves"
 	"whisper/sqls"
 	"whisper/structs"
@@ -47,10 +48,43 @@ func NewReply(ctx iris.Context) {
 		ctx.WriteString("内容不能为空哦")
 		return
 	}
+
+	//检测用户是否已登录
 	userid := serves.GetUserID(ctx)
+	if userid == 0 {
+		ctx.StatusCode(iris.StatusForbidden)
+		ctx.WriteString("用户未登录")
+		return
+	}
+
 	result, info := sqls.NewReply(resRelpy, userid)
 	if !result {
 		ctx.StatusCode(iris.StatusUnauthorized)
 	}
 	ctx.WriteString(info)
+}
+
+/*DelReply handler 删除某条回复
+传入postid 需验证用户是否为接收人*/
+func DelReply(ctx iris.Context) {
+	replyid, err := ctx.URLParamInt("id")
+	if err != nil {
+		fmt.Println("删除reply，传入参数错误", err.Error())
+	}
+
+	//检测用户是否已登录+获取用户id
+	userid := serves.GetUserID(ctx)
+	if userid == 0 {
+		ctx.StatusCode(iris.StatusForbidden)
+		ctx.WriteString("用户未登录")
+		return
+	}
+	//执行删除SQL
+	result := sqls.DelReply(replyid, userid)
+	if !result {
+		ctx.StatusCode(210)
+		ctx.WriteString("删除回复失败")
+		return
+	}
+	ctx.WriteString("删除回复成功")
 }
