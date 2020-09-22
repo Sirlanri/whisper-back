@@ -14,6 +14,13 @@ func GetAllReply(ctx iris.Context) {
 	//从session中获取用户id
 	userid := serves.GetUserID(ctx)
 
+	//返回0 表示未登录
+	if userid == 0 {
+		ctx.StatusCode(210)
+		ctx.WriteString("未登录账号")
+		return
+	}
+
 	replys := sqls.GetAllReply(userid)
 	jsonData := map[string][]structs.ReplyDetail{
 		"replys": replys,
