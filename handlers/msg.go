@@ -9,7 +9,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-//GetAllReply handler 获取全部回复详情
+//GetAllReply handler 获取全部回复详情 采用懒加载，此handler暂时弃用
 func GetAllReply(ctx iris.Context) {
 	//从session中获取用户id
 	userid := serves.GetUserID(ctx)
@@ -22,6 +22,27 @@ func GetAllReply(ctx iris.Context) {
 	}
 
 	replys := sqls.GetAllReply(userid)
+	jsonData := map[string][]structs.ReplyDetail{
+		"replys": replys,
+	}
+	ctx.JSON(jsonData)
+}
+
+/*GetReplys handler 用以取代GetAllReply
+获取回复，传入num，一次返回20个*/
+func GetReplys(ctx iris.Context) {
+	//从session中获取用户id
+	userid := serves.GetUserID(ctx)
+
+	//返回0 表示未登录
+	if userid == 0 {
+		ctx.StatusCode(210)
+		ctx.WriteString("未登录账号")
+		return
+	}
+	//获取请求的起始值
+	num := ctx.URLParamIntDefault("num", 0)
+	replys := sqls.GetReplys(userid, num)
 	jsonData := map[string][]structs.ReplyDetail{
 		"replys": replys,
 	}

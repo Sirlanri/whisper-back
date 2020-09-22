@@ -105,9 +105,19 @@ func GetPostByUser(ctx iris.Context) {
 	ctx.JSON(jsondata)
 }
 
-/*GetPostByGroup handler
+/*GetPostByGroup handler 懒加载
 通过群组id，获取此群组的post 限制20*/
 func GetPostByGroup(ctx iris.Context) {
+	//从session中获取用户id
+	userid := serves.GetUserID(ctx)
+
+	//返回0 表示未登录
+	if userid == 0 {
+		ctx.StatusCode(210)
+		ctx.WriteString("未登录账号")
+		return
+	}
+
 	groupid, err := ctx.URLParamInt("id")
 	if err != nil {
 		fmt.Println("传入参数错误", err.Error())

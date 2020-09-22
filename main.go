@@ -33,6 +33,7 @@ func main() {
 	whisper.Get("/getPostByUser", handlers.GetPostByUser)
 
 	whisper.Get("/getAllReply", handlers.GetAllReply)
+	whisper.Get("/getReplys", handlers.GetReplys)
 	whisper.Get("/readMsg", handlers.ReadMsg)
 
 	whisper.Get("/changeAvatar", handlers.ChangeAvatar)
