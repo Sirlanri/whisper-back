@@ -42,7 +42,11 @@ func GetUserMail(ctx iris.Context) (mail string) {
 func GetUserID(ctx iris.Context) int {
 	sessionID := sess.Start(ctx)
 	//如果cookie有问题，没有这个key，就返回0
-	userid := sessionID.GetIntDefault("userid", 0)
+	userid, err := sessionID.GetInt("userid")
+	if err != nil {
+		fmt.Println("从session获取id出错", err.Error())
+		userid = 0
+	}
 	return userid
 }
 
