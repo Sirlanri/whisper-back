@@ -22,7 +22,6 @@ func NewPost(res structs.ResPost, userid int) {
 	if err != nil {
 		fmt.Println("获取群ID出错", err.Error())
 	}
-	fmt.Println("获取群组ID ", time.Since(t1))
 
 	//写入post表
 	pre, err := tx.Prepare(`INSERT INTO post (publisher,groupid,content)
@@ -34,7 +33,6 @@ func NewPost(res structs.ResPost, userid int) {
 	if err != nil {
 		fmt.Println("SQL写入post出错 ", err.Error())
 	}
-	fmt.Println("写入post ", time.Since(t1))
 	postid, _ := newrow.LastInsertId()
 
 	//插入picture表
@@ -44,7 +42,6 @@ func NewPost(res structs.ResPost, userid int) {
 			fmt.Println("SQL 插入图片出错", err.Error())
 		}
 	}
-	fmt.Println("写入图片 ", time.Since(t1))
 
 	//写入tag
 	for _, tag := range res.Tags {
@@ -60,7 +57,6 @@ func NewPost(res structs.ResPost, userid int) {
 	}
 	elapsed := time.Since(t1)
 	fmt.Println("共计耗时 ", elapsed)
-	fmt.Println("SQL写入完毕")
 }
 
 //GetGroupNames SQL 从数据库获取全部的群组名称 用于创建post
@@ -78,7 +74,6 @@ func GetGroupNames() (groups []string) {
 		}
 		groups = append(groups, groupName)
 	}
-	fmt.Println(groups)
 	return
 }
 
@@ -97,7 +92,6 @@ func GetTags() (tags []string) {
 		}
 		tags = append(tags, tagName)
 	}
-	fmt.Println(tags)
 	return
 }
 
