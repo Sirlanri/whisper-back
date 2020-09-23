@@ -12,7 +12,7 @@ import (
 var Db *sql.DB
 
 //初始化，自动创建db指针
-func main() {
+func main3() {
 	Db = ConnectDB()
 	insertalot()
 }

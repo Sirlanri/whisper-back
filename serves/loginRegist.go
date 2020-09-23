@@ -2,7 +2,7 @@ package serves
 
 import (
 	"crypto/md5"
-	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"regexp"
 	"strings"
@@ -13,7 +13,7 @@ import (
 func Login(mail string, pw string) (result bool, power int) {
 	//hashed := Myhash(pw)
 	pwFromDb, power := sqls.Login(mail)
-	if pw == pwFromDb {
+	if Myhash(pw) == pwFromDb {
 		fmt.Println("用户登录成功", mail)
 		result = true
 	} else {
@@ -24,9 +24,12 @@ func Login(mail string, pw string) (result bool, power int) {
 
 //Myhash 计算密码的哈希值
 func Myhash(pw string) string {
-	afterHash := md5.New().Sum([]byte(pw))
-	after64 := base64.StdEncoding.EncodeToString(afterHash)
-	return after64
+	pw = pw + "IamRicoLan"
+	myHash := md5.New()
+	myHash.Write([]byte(pw))
+	res := myHash.Sum(nil)
+	result := hex.EncodeToString(res)
+	return result
 }
 
 //Regist 接受用户名、邮箱、密码
@@ -35,7 +38,7 @@ func Regist(name, mail, pw string) (result string, code int) {
 		result = "用户名或邮箱格式不正确，请检查后输入"
 		code = 202
 	} else {
-		result, code = sqls.Regist(name, mail, pw)
+		result, code = sqls.Regist(name, mail, Myhash(pw))
 	}
 	return
 }
