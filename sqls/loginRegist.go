@@ -47,7 +47,10 @@ func GetIDBymail(mail string) int {
 	tx, _ := Db.Begin()
 	idrow := tx.QueryRow(`select userid from user where mail=?`, mail)
 	var userid int
-	idrow.Scan(&userid)
+	err := idrow.Scan(&userid)
+	if err != nil {
+		fmt.Println("通过mail获取ID出错 ", err.Error())
+	}
 	tx.Commit()
 	return userid
 }
