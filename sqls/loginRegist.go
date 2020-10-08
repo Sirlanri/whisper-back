@@ -45,7 +45,7 @@ func Regist(name, mail, pw string) (result string, code int) {
 //GetIDBymail SQL 登录时通过邮箱获取id，保存在session中
 func GetIDBymail(mail string) int {
 	tx, _ := Db.Begin()
-	fmt.Println("登录时，传入的mail", mail)
+	//fmt.Println("登录时，传入的mail", mail)
 	idrow := tx.QueryRow(`select userid from user where mail=?`, mail)
 	var userid int
 	err := idrow.Scan(&userid)
@@ -56,6 +56,6 @@ func GetIDBymail(mail string) int {
 	if err != nil {
 		fmt.Println("通过mail获取ID出错 commit出错", err.Error())
 	}
-	fmt.Println("登录时，通过mail获得的id", userid)
+	//fmt.Println("登录时，通过mail获得的id", userid)
 	return userid
 }
