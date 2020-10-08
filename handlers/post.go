@@ -62,7 +62,7 @@ func UploadPics(ctx iris.Context) {
 	defer out.Close()
 	io.Copy(out, file)
 	//上传地址，本地测试or服务器
-	whole := "http://localhost:8090/whisper/getpics/" + fname
+	whole := "https://api.ri-co.cn/whisper/getpics/" + fname
 	ctx.WriteString(whole)
 	fmt.Println("上传图片成功", fname)
 }
