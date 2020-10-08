@@ -53,7 +53,7 @@ func main() {
 	whisper.Post("/newReply", handlers.NewReply)
 
 	whisper.HandleDir("/getpics", iris.Dir("./uploadpics"))
-	app.Run(iris.Addr(":8090"))
+	app.Run(iris.Addr(":9005"))
 
 	return
 }

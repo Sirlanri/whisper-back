@@ -17,7 +17,7 @@ func init() {
 
 //ConnectDB 初始化时，连接数据库
 func ConnectDB() *sql.DB {
-	Db, err := sql.Open("mysql", "root:123456@/whisper")
+	Db, err := sql.Open("mysql", "whisper:123456@/whisper")
 	if err != nil {
 		fmt.Println("数据库初始化链接失败", err.Error())
 	}
