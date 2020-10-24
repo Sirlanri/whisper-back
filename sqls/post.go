@@ -128,7 +128,7 @@ func GetALlPost() (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称
@@ -237,7 +237,7 @@ func GetALlPostByUser(name string, num int) (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称
@@ -341,7 +341,7 @@ func GetPostByGroup(groupid int, num int) (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称
@@ -421,7 +421,19 @@ func DelPost(postid int) bool {
 		fmt.Println("删除post出错", err.Error())
 		return false
 	}
-	err = tx.Commit()
+	//删除post的Tag
+	_, err = tx.Exec(`DELETE FROM tag where postid=?`, postid)
+	if err != nil {
+		fmt.Println("删除post的tag出错", err.Error())
+		return false
+	}
+	//删除post的Tag
+	_, err = tx.Exec(`DELETE FROM tag where postid=?`, postid)
+	if err != nil {
+		fmt.Println("删除post的tag出错", err.Error())
+		return false
+	}
+	tx.Commit()
 	return true
 }
 
@@ -433,6 +445,18 @@ func DelMyPost(postid, userid int) bool {
 		postid, userid)
 	if err != nil {
 		fmt.Println("删除用户post出错", err.Error())
+		return false
+	}
+	//删除post的Tag
+	_, err = tx.Exec(`DELETE FROM tag where postid=?`, postid)
+	if err != nil {
+		fmt.Println("删除post的tag出错", err.Error())
+		return false
+	}
+	//删除post的评论
+	_, err = tx.Exec(`DELETE FROM reply where postid=?`, postid)
+	if err != nil {
+		fmt.Println("删除post的reply出错", err.Error())
 		return false
 	}
 	err = tx.Commit()
@@ -477,7 +501,7 @@ func GetLazyPost(n int) (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称
