@@ -167,12 +167,7 @@ func DelUserByPostID(postid int) bool {
 		return false
 	}
 
-	//删除用户发布的tag
-	_, err = tx.Exec(`delete from reply where fromUser=?`, userid)
-	if err != nil {
-		fmt.Println("删除用户发布的reply出错", err.Error())
-		return false
-	}
+	//删除用户发布的tag，有点复杂，以后再写
 
 	err = tx.Commit()
 	if err != nil {
