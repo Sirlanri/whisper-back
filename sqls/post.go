@@ -200,8 +200,8 @@ func GetALlPost() (posts []structs.DataPost) {
 
 }
 
-//GetALlPostByUser SQL 获取某个用户的全部post
-func GetALlPostByUser(name string, num int) (posts []structs.DataPost) {
+//GetAllPostByUser SQL 获取某个用户的全部post
+func GetAllPostByUser(name string, num int) (posts []structs.DataPost) {
 	tx, _ := Db.Begin()
 	var (
 		userids []int
