@@ -53,8 +53,8 @@ func main() {
 		whisper.Post("/newGroup", handlers.NewGroup)
 		whisper.Post("/newReply", handlers.NewReply)
 
-	        whisper.HandleDir("/getpics", iris.Dir("./uploadpics"))
-        }
+		//whisper.HandleDir("/getpics", iris.Dir("./uploadpics"))
+	}
 	app.Run(iris.Addr(":9005"))
 
 	return
