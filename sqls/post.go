@@ -2,7 +2,6 @@ package sqls
 
 import (
 	"fmt"
-	"time"
 	"whisper/structs"
 )
 
@@ -12,16 +11,11 @@ func NewPost(res structs.ResPost, userid int) {
 		err     error
 		groupid int
 	)
-	//计时
-	t1 := time.Now()
 	tx, _ := Db.Begin()
 
 	//获取群组id
 	groupRow := tx.QueryRow("select groupid from igroup where groupName=?", res.Group)
 	err = groupRow.Scan(&groupid)
-	if err != nil {
-		fmt.Println("获取群ID出错", err.Error())
-	}
 
 	//写入post表
 	pre, err := tx.Prepare(`INSERT INTO post (publisher,groupid,content)
@@ -55,8 +49,6 @@ func NewPost(res structs.ResPost, userid int) {
 	if err != nil {
 		fmt.Println("SQL commit出错 ", err.Error())
 	}
-	elapsed := time.Since(t1)
-	fmt.Println("共计耗时 ", elapsed)
 }
 
 //GetGroupNames SQL 从数据库获取全部的群组名称 用于创建post
