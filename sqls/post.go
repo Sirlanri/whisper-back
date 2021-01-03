@@ -128,7 +128,7 @@ func GetALlPost() (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称
@@ -200,8 +200,8 @@ func GetALlPost() (posts []structs.DataPost) {
 
 }
 
-//GetALlPostByUser SQL 获取某个用户的全部post
-func GetALlPostByUser(name string, num int) (posts []structs.DataPost) {
+//GetAllPostByUser SQL 获取某个用户的全部post
+func GetAllPostByUser(name string, num int) (posts []structs.DataPost) {
 	tx, _ := Db.Begin()
 	var (
 		userids []int
@@ -237,7 +237,7 @@ func GetALlPostByUser(name string, num int) (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称
@@ -341,7 +341,7 @@ func GetPostByGroup(groupid int, num int) (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称
@@ -421,7 +421,8 @@ func DelPost(postid int) bool {
 		fmt.Println("删除post出错", err.Error())
 		return false
 	}
-	err = tx.Commit()
+
+	tx.Commit()
 	return true
 }
 
@@ -435,6 +436,7 @@ func DelMyPost(postid, userid int) bool {
 		fmt.Println("删除用户post出错", err.Error())
 		return false
 	}
+
 	err = tx.Commit()
 	if err != nil {
 		fmt.Println("删除用户post，执行SQL出错", err.Error())
@@ -477,7 +479,7 @@ func GetLazyPost(n int) (posts []structs.DataPost) {
 			userids[index])
 		err = userRow.Scan(&posts[index].User, &posts[index].Avatar)
 		if err != nil {
-			fmt.Println("SQL 写入user信息出错", err.Error())
+			fmt.Println("SQL 写入user信息出错", err.Error(), "用户ID：", userids[index])
 		}
 
 		//通过groupid获取群名称

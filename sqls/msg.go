@@ -76,7 +76,7 @@ func NewReply(reply structs.ResNewReply, userid int) (result bool, info string) 
 
 	//将回复写入数据库
 	_, err = tx.Exec(`insert into reply (postid,fromUser,toUser,content)
-	 values (?,?,?,?)`, reply.ID, userid, receverid, reply.Content)
+   values (?,?,?,?)`, reply.ID, userid, receverid, reply.Content)
 	if err != nil {
 		fmt.Println("reply写入数据库出错", err.Error())
 		info = "reply写入数据库出错"
@@ -109,7 +109,7 @@ func GetReplys(userid, num int) (replys []structs.ReplyDetail) {
 
 	//通过用户ID查询此用户接收的reply
 	replyRow, err := tx.Query(`select replyid,postid,fromUser,content,haveRead 
-	from reply where toUser=? ORDER BY replyid DESC LIMIT ?,20`, userid, num)
+  from reply where toUser=? ORDER BY replyid DESC LIMIT ?,20`, userid, num)
 	if err != nil {
 		fmt.Println("查询用户回复出错", err.Error())
 	}
