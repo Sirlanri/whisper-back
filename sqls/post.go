@@ -421,18 +421,7 @@ func DelPost(postid int) bool {
 		fmt.Println("删除post出错", err.Error())
 		return false
 	}
-	//删除post的Tag
-	_, err = tx.Exec(`DELETE FROM tag where postid=?`, postid)
-	if err != nil {
-		fmt.Println("删除post的tag出错", err.Error())
-		return false
-	}
-	//删除post的Tag
-	_, err = tx.Exec(`DELETE FROM tag where postid=?`, postid)
-	if err != nil {
-		fmt.Println("删除post的tag出错", err.Error())
-		return false
-	}
+
 	tx.Commit()
 	return true
 }
@@ -447,18 +436,7 @@ func DelMyPost(postid, userid int) bool {
 		fmt.Println("删除用户post出错", err.Error())
 		return false
 	}
-	//删除post的Tag
-	_, err = tx.Exec(`DELETE FROM tag where postid=?`, postid)
-	if err != nil {
-		fmt.Println("删除post的tag出错", err.Error())
-		return false
-	}
-	//删除post的评论
-	_, err = tx.Exec(`DELETE FROM reply where postid=?`, postid)
-	if err != nil {
-		fmt.Println("删除post的reply出错", err.Error())
-		return false
-	}
+
 	err = tx.Commit()
 	if err != nil {
 		fmt.Println("删除用户post，执行SQL出错", err.Error())

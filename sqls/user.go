@@ -132,7 +132,7 @@ func ChangeInfo(res structs.ResChangeInfo, userid int) bool {
 }
 
 /*DelUserByPostID SQL
-删除某个用户及其post、reply，通过post的id
+删除某个用户通过post的id
 */
 func DelUserByPostID(postid int) bool {
 	tx, _ := Db.Begin()
@@ -152,22 +152,6 @@ func DelUserByPostID(postid int) bool {
 		fmt.Println("删除用户失败，ID为 ", userid, err.Error())
 		return false
 	}
-
-	//删除用户发布的post
-	_, err = tx.Exec(`delete from post where publisher=?`, userid)
-	if err != nil {
-		fmt.Println("删除用户发布的post出错", err.Error())
-		return false
-	}
-
-	//删除用户发布的reply
-	_, err = tx.Exec(`delete from reply where fromUser=?`, userid)
-	if err != nil {
-		fmt.Println("删除用户发布的reply出错", err.Error())
-		return false
-	}
-
-	//删除用户发布的tag，有点复杂，以后再写
 
 	err = tx.Commit()
 	if err != nil {
