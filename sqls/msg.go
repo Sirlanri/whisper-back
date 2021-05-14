@@ -38,6 +38,11 @@ func GetAllReply(userid int) (replys []structs.ReplyDetail) {
 		userRow := tx.QueryRow(`select userName,avatar from user where userid=?`, userid)
 		userRow.Scan(&replys[index].Name, &replys[index].Avatar)
 	}
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("commit SQL出错", err.Error())
+	}
 	return
 }
 
@@ -135,6 +140,11 @@ func GetReplys(userid, num int) (replys []structs.ReplyDetail) {
 	for index, userid := range userids {
 		userRow := tx.QueryRow(`select userName,avatar from user where userid=?`, userid)
 		userRow.Scan(&replys[index].Name, &replys[index].Avatar)
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("commit SQL出错", err.Error())
 	}
 	return
 }

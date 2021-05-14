@@ -66,6 +66,10 @@ func GetGroupNames() (groups []string) {
 		}
 		groups = append(groups, groupName)
 	}
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("SQL commit出错 ", err.Error())
+	}
 	return
 }
 
@@ -83,6 +87,11 @@ func GetTags() (tags []string) {
 			fmt.Println("SQL scan出错", err.Error())
 		}
 		tags = append(tags, tagName)
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("commit SQL出错", err.Error())
 	}
 	return
 }
